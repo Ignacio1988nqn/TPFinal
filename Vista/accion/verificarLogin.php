@@ -1,0 +1,41 @@
+<?php
+
+session_start();
+
+require "../../configuracion.php";
+
+$datos = darDatosSubmitted();
+$resp = false;
+
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $nombreUsuario = $datos["usnombre"];
+    $password = $datos["uspass"];
+    $codigo = $datos["codigo"];
+
+    if (empty($nombreUsuario) || empty($password) || empty($codigo)) {
+        setFlashData('error', 'Debe llenar todos los datos');
+        redirect('../login.php');
+    }
+
+    $captcha = md5($codigo);
+    $codigoVerificacion = isset($_SESSION['codigo_verificacion']) ? $_SESSION['codigo_verificacion'] : '';
+
+    if ($codigoVerificacion !== $captcha) {
+        $_SESSION['codigo_verificacion'] = '';
+        setFlashData('error', 'El código de verificación es incorrecto');
+        redirect('../login.php');
+    }
+
+    $session = new Session();
+    // Intentar iniciar sesión
+    $resp = $session->iniciar($nombreUsuario, $password);
+
+    if ($resp) {
+        header("Location: ../paginaSegura.php");
+        exit;
+    } else {
+        header("Location: ../login.php?error=1");
+        exit;
+    }
+}
