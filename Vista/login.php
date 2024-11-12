@@ -1,3 +1,19 @@
+<?php
+
+require "../configuracion.php";
+
+session_start();
+
+// si el usuario ya esta logueado, lo redirecciona a la pagina principal
+if (isset($_SESSION['idususario'])) {
+    header("Location: index.php");
+    exit;
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,15 +25,6 @@
 </head>
 
 <body class="bg-light">
-
-    <?php
-
-    session_start();
-
-    require "../configuracion.php";
-
-    ?>
-
 
 
     <div class="d-flex justify-content-center align-items-center mt-4">
