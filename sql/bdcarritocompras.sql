@@ -70,6 +70,36 @@ INSERT INTO `compraestadotipo` (`idcompraestadotipo`, `cetdescripcion`, `cetdeta
 (3, 'enviada', 'cuando el usuario administrador envia a uno de las compras en estado =2 '),
 (4, 'cancelada', 'un usuario administrador podra cancelar una compra en cualquier estado y un usuario cliente solo en estado=1 ');
 
+
+-- ---------------------------------------------------------
+-- Nuevos datos para los test
+
+INSERT INTO menu (idmenu, menombre, medescripcion, idpadre, medeshabilitado) VALUES
+(1, 'Home', 'kkkkk', NULL, NULL),
+(2, 'Categorias', 'kkkkk', NULL, NULL),
+(3, 'Ofertas', 'kkkkk', NULL, NULL),
+(4, 'Home', './admin.php', NULL, NULL),
+(5, 'ABM Usuarios', './abmUsuarios.php', NULL, '2024-11-13 11:30:50'),
+(6, 'ABM Roles', './abmRoles.php', NULL, '2024-11-13 11:30:50'),
+(7, 'ABM Menú', './abmMenu.php', NULL, '2024-11-13 11:30:50'),
+(8, 'ABM Productos', './abmProductos.php', NULL, '2024-11-13 11:30:50');
+
+
+INSERT INTO rol (idrol, rodescripcion) VALUES
+(1, 'cliente'),
+(2, 'admin');
+
+
+INSERT INTO menurol (idmenu, idrol) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 2),
+(5, 2),
+(6, 2),
+(7, 2),
+(8, 2);
+
 -- --------------------------------------------------------
 
 --
