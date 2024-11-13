@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         exit;
     } else {
-        header("Location: ../login/login.php?error=1");
-        exit;
+        setFlashData('error', 'Datos incorrectos, vuelva a intentar');
+        redirect('../login/login.php');
     }
 }

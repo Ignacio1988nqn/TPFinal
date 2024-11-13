@@ -33,18 +33,18 @@ if (isset($_SESSION['idususario'])) {
                 <div class="col-md-4 col-sm-8 bg-white p-4 rounded shadow">
                     <form method="POST" action="../accion/verificarLogin.php" name="form-login" id="form-login">
                         <div class="form-group mb-3">
-                            <label for="usuario">Nombre de usuario:</label>
+                            <label for="usnombre">Nombre de usuario:</label>
                             <input type="text" class="form-control" id="usnombre" name="usnombre" required>
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="contraseña">Contraseña:</label>
+                            <label for="uspass">Contraseña:</label>
                             <input type="password" class="form-control" name="uspass" id="uspass" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="codigo" class="form-label">Código de verificación:</label>
-                            <input type="text" name="codigo" class="form-control" placeholder="Ingresa el texto de la imagen">
+                            <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Ingresa el texto de la imagen">
                         </div>
 
                         <div class="mb-3">
@@ -65,13 +65,6 @@ if (isset($_SESSION['idususario'])) {
                     
                     <?php
                     // Mensajes de error
-                    if (isset($_GET['error'])) {
-                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        Datos incorrectos, vuelva a intentar.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>'.$_GET['error'] ;
-                    }
-
                     if ($mensaje = getFlashData('error')) { ?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <?php echo $mensaje; ?>
@@ -101,7 +94,7 @@ if (isset($_SESSION['idususario'])) {
              * La imagen se asigna dinámicamente a la propiedad 'src' de la imagen en el documento.
              */
             function generaCodigo() {
-                let url = '../Utils/generador_captcha.php';
+                let url = '../../Utils/generador_captcha.php';
 
                 fetch(url)
                     .then(response => response.blob())
@@ -137,7 +130,7 @@ if (isset($_SESSION['idususario'])) {
     </script>
 
 
-    <script src="./assets/bootstrap5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/bootstrap5.3.3/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
