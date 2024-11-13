@@ -100,7 +100,7 @@ class UsuarioRol
     {
         $resp = false;
         $base = new BaseDatos();
-        $sql = "UPDATE usuariorol SET idusuario='" . $this->getUsuario()->getIdUsuario() . "', idrol='" . $this->getRol()->getIdRol();
+        $sql = "UPDATE usuariorol SET idusuario='" . $this->getUsuario()->getIdUsuario() . "', idrol='" . $this->getRol()->getIdRol()."' WHERE idusuario=" . $this->getUsuario()->getIdUsuario();
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;

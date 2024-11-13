@@ -126,17 +126,14 @@ class MenuRol {
                     $objMenu->cargar();
                     $objRol = new Rol(); 
                     $objRol->setIdRol($row['idrol']); 
-                    $objRol->cargar();
+                    $objRol->buscar();
                     $obj->setear($objMenu, $objRol);
                     array_push($arreglo, $obj);
-                }
-               
-            }
-            
+                }               
+            }            
         } else {
             self::setMensajeOperacion("MenuRol->listar: ".$base->getError());
-        }
- 
+        } 
         return $arreglo;
     }
     

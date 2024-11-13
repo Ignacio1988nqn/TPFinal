@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .logo {
+    float: left;
+  }
+  
+  .header {
+    overflow: hidden;
+    background-color: white;
+    padding: 20px 10px;
+  }
+  
+  .header a {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+  }
+  
+  .header a img {
+    height: 40px;
+  }
+  
+  .header a.logo {
+    font-size: 25px;
+    font-weight: bold;
+  }
+  
+  .redes-container {
+    padding: 20px 60px;
+    justify-content: flex-end;
+    float: right;
+  }
+  
+  nav {
+    position: sticky;
+    left: 0;
+    top: 0;
+    width: 300px;
+    height: calc(100vh);
+    background: #2D6653;
+    font-family: 'Roboto', 'sans-serif';
+    color: white;
+    transition: .4s ease;
+  }
+  
+  ul {
+    padding-left: 0px;
+  }
+  
+  .navigation li {
+    list-style: none;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+  }
+  
+  .navigation a {
+    color: var(--main-color);
+    display: block;
+    line-height: 3.5;
+    padding: 0 10px;
+    text-decoration: none;
+    transition: .4s ease;
+  }
+  
+  .navigation a:hover {
+    transform: translateX(10%);
+  }
+
+  
+  .litag {
+    background-color: #2D6608;
+    font-size: xx-large;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Verdana, sans-serif;
+  }

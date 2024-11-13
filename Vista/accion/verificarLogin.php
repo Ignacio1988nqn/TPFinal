@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($nombreUsuario) || empty($password) || empty($codigo)) {
         setFlashData('error', 'Debe llenar todos los datos');
-        redirect('../login.php');
+        redirect('../login/login.php');
     }
 
     $captcha = md5($codigo);
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($codigoVerificacion !== $captcha) {
         $_SESSION['codigo_verificacion'] = '';
         setFlashData('error', 'El código de verificación es incorrecto');
-        redirect('../login.php');
+        redirect('../login/login.php');
     }
 
     $session = new Session();
@@ -32,10 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $resp = $session->iniciar($nombreUsuario, $password);
 
     if ($resp) {
-        header("Location: ../paginaSegura.php");
+        foreach ($session->getRol() as $rol) {
+            $val = $rol->getIdRol();
+        }
+        if ($val == 1) {
+            header("Location: ../home/home.php");
+        } else {
+            header("Location: ../administracion/admin.php");
+        }
+
         exit;
     } else {
-        header("Location: ../login.php?error=1");
+        header("Location: ../login/login.php?error=1");
         exit;
     }
 }
