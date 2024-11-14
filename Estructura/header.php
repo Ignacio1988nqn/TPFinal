@@ -11,12 +11,12 @@ if ($session->validar()) {
 $btn1 = "Ingresá";
 $btn1Link = "../login/login.php";
 $btn2 = "Creá tu cuenta";
-$btn2Link = "./newCuenta.php";
+$btn2Link = "../registro/registro.php";
 if ($val != 0) {
     $btn1 = "Mi Cuenta";
     $btn1Link = "./micuenta.php";
     $btn2 = "Log Out";
-    $btn2Link = "./logout.php";
+    $btn2Link = "../logout/logout.php";
 }
 
 ?>
