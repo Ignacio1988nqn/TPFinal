@@ -10,7 +10,10 @@ if (isset($_SESSION['idususario'])) {
     exit;
 }
 
-
+if (isset($_SESSION['mensajeRegistro'])) {
+    echo "<p>" . $_SESSION['mensajeRegistro'] . "</p>";
+    unset($_SESSION['mensajeRegistro']);
+}
 ?>
 
 

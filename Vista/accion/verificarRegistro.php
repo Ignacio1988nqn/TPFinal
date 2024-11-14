@@ -47,8 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $rolAsignado = $nuevoUsuario->abm($datosRol);
     
             if ($rolAsignado) {
-                // redirige a la página de inicio
-                header("Location: ../home/home.php");
+                // redirige al login para validar el usuario
+                $_SESSION['mensajeRegistro'] = "Usuario registrado exitosamente. Debe validar su sesion.";
+
+                header("Refresh: 1; url=../login/login.php");
+                echo $_SESSION['mensajeRegistro'];
                 exit;
             } else {
                 setFlashData('error', 'Datos incorrectos, vuelva a intentar');
