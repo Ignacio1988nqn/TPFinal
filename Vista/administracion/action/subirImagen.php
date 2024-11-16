@@ -9,7 +9,13 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
     $destinp = $dir . $archivo;
     $extPer = ['jpg', 'jpeg', 'png', 'gif'];
     $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
-    if (in_array($extension, $extPer)) {
+    $permitido = false;
+    foreach ($extPer as $ext) {
+        if ($extension === $ext) {
+            $permitido = true;
+        }
+    }
+    if ($permitido) {
         if (move_uploaded_file($_FILES['imagen']['tmp_name'], $destinp)) {
             $resp['success'] = true;
             $resp['nombre'] = $archivo;
