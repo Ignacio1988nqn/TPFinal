@@ -180,5 +180,23 @@ class Usuario {
     }
 
 
+    public function cargar2(){
+        $resp = false; 
+        $base= new BaseDatos; 
+        $sql = "SELECT * FROM usuario WHERE idusuario = " . $this->getIdUsuario(); 
+        if ($base->Iniciar()) {
+            $res = $base->Ejecutar($sql);
+            if($res>-1){
+                if($res>0){
+                    $row = $base->Registro();
+                    $this->cargar($row['idusuario'], $row['usnombre'], $row['uspass'], $row['usmail'], $row['usdeshabilitado']);
+                    $resp = true;
+                }
+            }
+        } else {
+            $this->setmensajeoperacion("usuario->listar: ".$base->getError());
+        }
+        return $resp;
+    }
 
 }

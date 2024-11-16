@@ -161,4 +161,30 @@ class UsuarioRol
         return $arreglo;
     }
 
+    public function cargar2(){
+        $resp = false; 
+        $base= new BaseDatos; 
+        $idusuario = $this->getUsuario()->getIdUsuario(); //idusuario dentro del objusuario
+        $idrol = $this->getRol()->getIdRol(); 
+        $sql = "SELECT * FROM usuariorol WHERE idusuario = " . $idusuario. " AND idrol = ". $idrol; 
+        if ($base->Iniciar()) {
+            $res = $base->Ejecutar($sql);
+            if($res>-1){
+                if($res>0){
+                    $row = $base->Registro();
+                    $objUsuario = new Usuario();
+                    $objUsuario->setIdUsuario($row['idusuario']);
+                    $objUsuario->cargar2(); 
+                    $objRol = new Rol();
+                    $objRol->setIdRol($row['idrol']);
+                    $objRol->cargar2(); 
+                    $this->cargar($objUsuario,$objRol);
+                    $resp = true;
+                }
+            }
+        } else {
+            $this->setMensajeOperacion("usuariorol->listar: ".$base->getError());
+        }
+        return $resp;
+    }
 }

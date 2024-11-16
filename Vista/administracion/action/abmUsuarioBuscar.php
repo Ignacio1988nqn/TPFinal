@@ -2,7 +2,7 @@
 include_once "../../../configuracion.php";
 $datos = darDatosSubmitted();
 
-$idusuario = $_POST['usuario'];
+$idusuario = $datos['usuario'];
 
 $abmusuario = new ABMUsuario();
 $param['idusuario'] = $idusuario;
@@ -17,7 +17,11 @@ $todosRoles = $abmrol->buscar(null);
 $retorno['usnombre'] = $usuario[0]->getUsNombre();
 $retorno['usmail'] = $usuario[0]->getUsMail();
 $retorno['id'] = $usuario[0]->getIdUsuario();
-$retorno['usrol'] = $userrol[0]->getRol()->getIdRol();
+$retorno['usrol'] = [];                   //para manejar distintos roles 
+foreach($userrol as $ur){
+    $retorno['usrol'][] = $ur->getRol()->getIdRol(); 
+}
+
 $retorno['usdesabilitado'] = $usuario[0]->getUsDeshabilitado();
 
 echo json_encode($retorno);

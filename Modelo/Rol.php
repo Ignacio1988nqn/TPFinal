@@ -145,4 +145,23 @@ class Rol
         }
         return $arreglo;
     }
+
+    public function cargar2() {
+        $resp = false; 
+        $base = new BaseDatos; 
+        $sql = "SELECT * FROM rol WHERE idrol = " . $this->getIdRol(); 
+        if ($base->Iniciar()) {
+            $res = $base->Ejecutar($sql);
+            if($res > -1) {
+                if($res > 0) {
+                    $row = $base->Registro();
+                    $this->cargar($row['idrol'], $row['rodescripcion']);
+                    $resp = true;
+                }
+            }
+        } else {
+            $this->setMensajeOperacion("rol->cargar: " . $base->getError());
+        }
+        return $resp;
+    }
 }

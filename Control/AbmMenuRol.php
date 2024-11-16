@@ -16,7 +16,7 @@ class AbmMenuRol {
             $objMenu->cargar(); 
             $objRol = new Rol(); 
             $objRol->setIdRol($param['idrol']); 
-            $objRol->cargar();
+            $objRol->cargar2();
             $obj->setear($objMenu, $objRol);
         }
         return $obj;
@@ -37,7 +37,7 @@ class AbmMenuRol {
             $objMenu->cargar(); 
             $objRol = new Rol(); 
             $objRol->setIdRol($param['idrol']); 
-            $objRol->cargar();
+            $objRol->cargar2();
             $obj->setear($objMenu,$objRol);
         }
         return $obj;

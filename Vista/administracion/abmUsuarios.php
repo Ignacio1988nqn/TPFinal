@@ -17,6 +17,20 @@ foreach ($usuariosLista as $obj) {
 
 $combo .= '</select>';
 
+
+//Rol dinamico checkbox para manejar distintos roles 
+$roles = new ABMRol(); 
+$listaRoles = $roles->buscar(null);
+
+$comboRol = '';
+foreach ($listaRoles as $rol) {
+    $checked = ''; 
+    $comboRol .= '<div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="' . $rol->getIdRol() . '" id="rol_' . $rol->getIdRol() . '" name="roles[]">
+                    <label class="form-check-label" for="rol_' . $rol->getIdRol() . '">' . htmlspecialchars($rol->getRoDescripcion()) . '</label>
+                  </div>';
+}
+
 ?>
 <section class="home-section">
     <div class="right-container">
@@ -63,11 +77,9 @@ $combo .= '</select>';
                         <label for="selectRol" class="col-sm-2 col-form-label">Rol</label>
                         <div class="col-sm-2">
                             <div class="selDiv">
-                                <select id="selectRol" name="selectRol" class="form-select" aria-label="Default select example">
-                                    <option selected>Seleccione...</option>
-                                    <option value="1">Cliente</option>
-                                    <option value="2">Administrador</option>
-                                </select>
+                            <?php
+                            echo $comboRol; 
+                            ?>
                             </div>
                         </div>
                     </div>
@@ -101,7 +113,15 @@ include_once("../../estructura/footer.php");
                 document.getElementById('id').value = data['id'];
                 document.getElementById('nombre').value = data['usnombre'];
                 document.getElementById('email').value = data['usmail'];
-                document.getElementById('selectRol').value = true;
+                var rolesAsignados = data['usrol']; 
+                $('input[name="roles[]"]').each(function() {
+                    var checkbox = $(this);
+                    if (rolesAsignados.includes(parseInt(checkbox.val()))) {
+                        checkbox.prop('checked', true); //si esta asignado, lo marca 
+                    } else {
+                        checkbox.prop('checked', false);
+                    }
+                });
                 if (data['usdesabilitado'] == null) {
                     document.getElementById("habilitado").checked = true;
                 } else {
@@ -109,7 +129,7 @@ include_once("../../estructura/footer.php");
                 }
 
                 $('#selectRol option[value="' + data['usrol'] + '"]').attr("selected", "selected");
-
+                
             },
             error: function(request, status, error) {
                 alert(request.responseText);
@@ -118,13 +138,24 @@ include_once("../../estructura/footer.php");
     }
 
     function guardar() {
+        var rolesSeleccionados = [];
+        $('input[name="roles[]"]:checked').each(function() {
+            rolesSeleccionados.push($(this).val());
+        });
         $.ajax({
             url: './action/abmUsuarioGuardar.php',
             type: 'post',
             dataType: 'json',
-            data: $('form#dataform').serialize(),
+            data: {
+                id: $('#id').val(),
+                nombre: $('#nombre').val(),
+                email: $('#email').val(),
+                habilitado: $('#habilitado').prop('checked') ? 1 : 0,
+                roles: rolesSeleccionados 
+            }, 
             success: function(data) {
                 alert("Los Cambios se Realizaron exitosamente");  
+                window.location.href = 'abmUsuarios.php';
             },
             error: function(request, status, error) {
                 alert(request.responseText);
