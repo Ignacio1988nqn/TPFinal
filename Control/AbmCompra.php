@@ -15,7 +15,7 @@ class AbmCompra {
             $obj = new Compra();
             $objUsuario = new Usuario(); 
             $objUsuario->setIdUsuario($param['idusuario']);
-            $objUsuario->buscar();
+            $objUsuario->cargar2();
             $obj->setear($param['idcompra'], $param['cofecha'], $objUsuario);
         }
         return $obj;
