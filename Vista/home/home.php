@@ -1,7 +1,15 @@
 <?php
-// require "../configuracion.php";
 include_once("../../estructura/header.php");
 include_once("../../estructura/sidebar.php");
+
+$abmProducto = new AbmProducto();
+$param['tipo'] = 1;
+$hogar = $abmProducto->buscar($param);
+$param['tipo'] = 2;
+$celulares = $abmProducto->buscar($param);
+$param['tipo'] = 3;
+$pc = $abmProducto->buscar($param);
+
 ?>
 <section class="home-section">
     <div class="right-container">
@@ -48,54 +56,42 @@ include_once("../../estructura/sidebar.php");
             <h2 class="dynamic__carousel-title">Los mejores precios para el hogar </h2>
             <div class="container text-center">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                    <div class="col"> <img src="../assets/image/h1.jpg" class="d-block w-100" alt="...">
-                        <p>HELADERA DREAN 364 LTRS BLANCA</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/h2.jpg" class="d-block w-100" alt="...">
-                        <p>Heladera Cíclica Drean 277Lts</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/t1.jpg" class="d-block w-100" alt="...">
-                        <p>Televisor Samsung Smart Tv 32 HD Smart TV T4300</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/l1.jpg" class="d-block w-100" alt="...">
-                        <p>Lavarropas Carga Frontal 6Kg 800 RPM Drean Next 6.08 ECO</p>
-                    </div>
+                    <?php
+                    for ($x = 0; $x < 4; $x++) {
+                        echo "<div class='col'> <img src='../assets/image/" . $hogar[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
+                         onclick='verProducto(" . $hogar[$x]->getIdProducto() . ")' style='cursor: pointer;'>";
+                        echo "<p>" . $hogar[$x]->getProNombre() . "</p>";
+                        echo "</div>";
+                    }
+                    ?>
                 </div>
             </div>
             <hr>
             <h2 class="dynamic__carousel-title">Las mejores ofertas en celulares </h2>
             <div class="container text-center">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                    <div class="col"> <img src="../assets/image/cel5.jfif" class="d-block w-100" alt="...">
-                        <p>Celular Samsung Galaxy A15 128/4GB Amarillo</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/cel2.jfif" class="d-block w-100" alt="...">
-                        <p>Celular Motorola G24 128GB Pink Lavender</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/cel6.jfif" class="d-block w-100" alt="...">
-                        <p>Celular Motorola Moto G14 Rosa 4+128Gb</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/cel4.jfif" class="d-block w-100" alt="...">
-                        <p>Celular Motorola E22 6,5" 64GB Azul</p>
-                    </div>
+                    <?php
+                    for ($x = 0; $x < 4; $x++) {
+                        echo "<div class='col'> <img src='../assets/image/" . $celulares[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
+                         onclick='verProducto(" . $celulares[$x]->getIdProducto() . ")' style='cursor: pointer;'>";
+                        echo "<p>" . $celulares[$x]->getProNombre() . "</p>";
+                        echo "</div>";
+                    }
+                    ?>
                 </div>
             </div>
             <hr>
             <h2 class="dynamic__carousel-title">Arma tu PC con los mejores precios</h2>
             <div class="container text-center">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                    <div class="col"> <img src="../assets/image/placa1.jfif" class="d-block w-100" alt="...">
-                        <p>HELADERA DREAN 364 LTRS BLANCA</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/monitor1.jfif" class="d-block w-100" alt="...">
-                        <p>Heladera Cíclica Drean 277Lts</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/placa2.jfif" class="d-block w-100" alt="...">
-                        <p>Televisor Samsung Smart Tv 32 HD Smart TV T4300</p>
-                    </div>
-                    <div class="col"><img src="../assets/image/gabinete1.jfif" class="d-block w-100" alt="...">
-                        <p>Lavarropas Carga Frontal 6Kg 800 RPM Drean Next 6.08 ECO</p>
-                    </div>
+                    <?php
+                    for ($x = 0; $x < 4; $x++) {
+                        echo "<div class='col'> <img src='../assets/image/" . $pc[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
+                         onclick='verProducto(" . $pc[$x]->getIdProducto() . ")' style='cursor: pointer;'>";
+                        echo "<p>" . $pc[$x]->getProNombre() . $pc[$x]->getIdProducto() . "</p>";
+                        echo "</div>";
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -113,4 +109,8 @@ include_once("../../estructura/footer.php");
         interval: 2000,
         wrap: false
     })
+
+    function verProducto(id) {
+        window.location.href = "./producto.php?idproducto="+id;
+    }
 </script>

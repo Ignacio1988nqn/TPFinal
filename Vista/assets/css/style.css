@@ -13,10 +13,10 @@ body {
 }
 
 .sidebar {
-  position: absolute;
-  top: 0;
+  /* position: absolute; */
+  /* top: 0; */
   left: 0;
-  height: 181%;
+  /* height: 181%; */
   width: 260px;
   background: #11101d;
   z-index: 100;
@@ -256,10 +256,7 @@ body {
 }
 
 .home-section {
-  position: relative;
   background: #E4E9F7;
-  /* height: 100vh; */
-  left: 260px;
   width: calc(100% - 260px);
   transition: all 0.5s ease;
   padding: 12px;

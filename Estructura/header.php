@@ -14,7 +14,7 @@ $btn2 = "Creá tu cuenta";
 $btn2Link = "../registro/registro.php";
 if ($val != 0) {
     $btn1 = "Mi Cuenta";
-    $btn1Link = "./micuenta.php";
+    $btn1Link = "../home/micuenta.php";
     $btn2 = "Log Out";
     $btn2Link = "../logout/logout.php";
 }
@@ -63,4 +63,16 @@ if ($val != 0) {
                 </div>
             </div>
         </div>
+        <div class="mensajeapp" id="mensajeapp" name="mensajeapp" class="col-md-4 col-sm-12 mb-30"
+            style="opacity : 0;z-index: 1; right: 40px; top: 30px; position: fixed;">
+            <div class="card text-white bg-success card-box">
+                <div class="card-header">Amazon Libre</div>
+                <hr style="width: 140%; margin-left: -55px;">
+                <div class="card-body">
+                    <h5 id="mensajestr" class="card-title text-white"></h5>
+                </div>
+            </div>
+        </div>
     </header>
+
+    <div id="mainContainer" style="display: flex;">

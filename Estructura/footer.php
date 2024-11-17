@@ -9,6 +9,7 @@ if ($session->validar()) {
     }
 }
 
+echo "</div>";
 if ($val != 2) {
     include_once("../../estructura/footerPublic.php");
 }

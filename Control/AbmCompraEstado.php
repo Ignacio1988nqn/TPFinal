@@ -17,7 +17,6 @@ class AbmCompraEstado {
         }
         return $obj;
     }
-    
     /**
      * Espera como parametro un arreglo asociativo donde las claves coincidcompraestadoen con los nombres de las variables instancias del objeto que son claves
      * @param array $param
@@ -53,15 +52,16 @@ class AbmCompraEstado {
      */
     public function alta($param){
         $resp = false;
-        //$param['idcompraestado'] =null;
+        $param['idcompraestado'] =null;
+        $param['cefechafin'] =null;
         $elObjtCompraEstado = $this->cargarObjeto($param);
 //        //verEstructura($elObjtCompraEstado);
         if ($elObjtCompraEstado!=null and $elObjtCompraEstado->insertar()){
             $resp = true;
         }
-        return $resp;
-        
-    }
+        return $resp;        
+    }  
+
     /**
      * permite eliminar un objeto 
      * @param array $param
@@ -99,7 +99,7 @@ class AbmCompraEstado {
     /**
      * permite buscar un objeto
      * @param array $param
-     * @return boolean
+     * @return array
      */
     public function buscar($param){
         $where = " true ";

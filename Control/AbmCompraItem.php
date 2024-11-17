@@ -53,7 +53,7 @@ class AbmCompraItem {
      */
     public function alta($param){
         $resp = false;
-        //$param['idcompraitem'] =null;
+        $param['idcompraitem'] =null;
         $elObjtCompraItem = $this->cargarObjeto($param);
 //        verEstructura($elObjtCompraItem);
         if ($elObjtCompraItem!=null and $elObjtCompraItem->insertar()){

@@ -15,7 +15,7 @@ class AbmCompra {
             $obj = new Compra();
             $objUsuario = new Usuario(); 
             $objUsuario->setIdUsuario($param['idusuario']);
-            $objUsuario->cargar();
+            $objUsuario->buscar();
             $obj->setear($param['idcompra'], $param['cofecha'], $objUsuario);
         }
         return $obj;
@@ -102,7 +102,7 @@ class AbmCompra {
     /**
      * permite buscar un objeto
      * @param array $param
-     * @return boolean
+     * @return array
      */
     public function buscar($param){
         $where = " true ";
@@ -116,5 +116,9 @@ class AbmCompra {
         }
         $arreglo = Compra::listar($where);  
         return $arreglo;
+    }
+
+    public function getLastInsertedID(){
+        return Compra::getLastInsertId();
     }
 }

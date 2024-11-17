@@ -1,6 +1,6 @@
 <?php
 $session = new Session();
-$val = 1;
+$val = 9;
 if ($session->validar()) {
     foreach ($session->getRol() as $rol) {
         $val = $rol->getIdRol();
@@ -12,8 +12,7 @@ $menurol = new AbmMenuRol();
 $menurolLista =  $menurol->buscar($param);
 $menu = new AbmMenu();
 ?>
-
-<div class="sidebar" style="top:auto;<?php if ($val == 2) echo 'height: 100%' ?>">
+<div class="sidebar">
     <ul class="nav-links">
         <?php
         foreach ($menurolLista as $lis) {

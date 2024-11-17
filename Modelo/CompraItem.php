@@ -95,7 +95,8 @@ class CompraItem {
     public function insertar(){
         $resp = false;
         $base=new BaseDatos();
-        $sql="INSERT INTO compraitem (idproducto, idcompra, cicantidad)  VALUES('".$this->getIdProducto()->getIdProducto(). "', '" . $this->getIdCompra()->getIdCompra(). "', '" . $this->getCiCantidad(). "')";
+        $sql="INSERT INTO compraitem (idproducto, idcompra, cicantidad)  VALUES('".$this->getIdProducto(). "', '" . $this->getIdCompra(). "', '" . $this->getCiCantidad(). "')";
+       
         if ($base->Iniciar()) {
             if ($elid = $base->Ejecutar($sql)) {
                 $this->setIdCompraItem($elid);
