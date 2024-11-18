@@ -100,7 +100,7 @@ INSERT INTO menurol (idmenu, idrol) VALUES
 (5, 2),
 (6, 2),
 (7, 2),
-(8, 2).
+(8, 2),
 (9, 1),
 (1, 9),
 (2, 9);
@@ -165,7 +165,7 @@ CREATE TABLE `producto` (
   `pronombre` varchar(50) NOT NULL,
   `prodetalle` varchar(512) NOT NULL,
   `procantstock` int(11) NOT NULL,
-   `item` int(11) NOT NULL
+   `tipo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ---------------------------------------------------------

@@ -32,16 +32,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $resp = $session->iniciar($nombreUsuario, $password);
 
     if ($resp) {
-        foreach ($session->getRol() as $rol) {
-            $val = $rol->getIdRol();
-        }
-        if ($val == 1) {
-            header("Location: ../home/home.php");
+        //controla los roles
+        $abmUsuarioRol = new ABMUsuarioRol(); 
+        $idUsuario = $session->getUsuario()->getIdUsuario(); 
+        $roles = $abmUsuarioRol->buscar(['idusuario' => $idUsuario]); 
+        if (count($roles) > 1 ){                       //si tiene mas de un rol, lo redirecciona a la seleccion de ingreso de rol
+            $session->setRoles($roles) ;
+            header("Location: /TPFinal/Vista/accion/seleccionarRol.php"); 
+            exit(); 
         } else {
-            header("Location: ../administracion/admin.php");
+            $rol = $roles[0]->getRol()->getIdRol();
+            $mapaRoles = [
+                1 => '../home/home.php',      
+                2 => '../administracion/admin.php', 
+                3 => '',                 //agregar pag de rol deposito, si es que tiene 
+            ];
+            if (isset($mapaRoles[$rol])) {
+                header("Location: " . $mapaRoles[$rol]);
+            } else {
+                echo "Rol no válido o desconocido.";
+                exit();
+            }
+    
+            exit;
         }
-
-        exit;
+        
     } else {
         setFlashData('error', 'Datos incorrectos, vuelva a intentar');
         redirect('../login/login.php');

@@ -24,6 +24,17 @@ class Session
         if (count($resultado) > 0) {
             $usuario = $resultado[0];
             $_SESSION['idusuario'] = $usuario->getIdUsuario();
+            //maneja los roles en caso de que sean dos o mas 
+            
+            $abmUsuarioRol = new ABMUsuarioRol();
+            $idUsuario = $_SESSION['idusuario']; 
+            $roles = $abmUsuarioRol->buscar(['idusuario' => $idUsuario]);
+            if (count($roles)>1){
+                //var_dump($roles);
+                $_SESSION['roles'] = $roles; 
+                header("Location: /TPFinal/Vista/accion/seleccionarRol.php");
+                exit();
+            } 
             $resp = true;
         } else {
             $this->cerrar();
@@ -84,5 +95,23 @@ class Session
         session_destroy();
         //$_SESSION['idusuario']=null;
         return $resp;
+    }
+
+    public function setRoles($roles) {
+        $_SESSION['roles'] = $roles;
+    }
+
+    //setea en caso de mas de un rol seleccionado 
+    public function setRol($rol){
+        $_SESSION['rolSelec'] = $rol; 
+    }
+
+    //obtiene el valor de un rol seleccionado en caso de mas de un rol
+    public function getRolSelec(){
+        $rol = null; 
+        if (isset($_SESSION['rolSelec'])){
+            $rol = $_SESSION['rolSelec']; 
+        }
+        return $rol; 
     }
 }

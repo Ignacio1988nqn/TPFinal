@@ -2,9 +2,15 @@
 $session = new Session();
 $val = 9;
 if ($session->validar()) {
-    foreach ($session->getRol() as $rol) {
-        $val = $rol->getIdRol();
+    $rolSelec = $session->getRolSelec(); 
+    if ($rolSelec !== null){
+        $val = $rolSelec; 
+    } else {
+        foreach ($session->getRol() as $rol) {
+            $val = $rol->getIdRol();
+        }
     }
+   
 }
 
 $param['idrol'] = $val;
