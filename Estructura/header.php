@@ -12,11 +12,11 @@ $btn1 = "Ingresá";
 $btn1Link = "../login/login.php";
 $btn2 = "Creá tu cuenta";
 $btn2Link = "../registro/registro.php";
+$btnCarrito = "Carrito";
+$btnCarritoLink = "../carrito/carrito.php";
 if ($val != 0) {
-    $btn1 = "Mi Cuenta";
-    $btn1Link = "../home/micuenta.php";
-    $btn2 = "Log Out";
-    $btn2Link = "../logout/logout.php";
+    $btn1 = "Log Out";
+    $btn1Link = "../logout/logout.php";
 }
 
 ?>
@@ -58,8 +58,11 @@ if ($val != 0) {
                         style="width: 640px;margin-left: -87px;margin-top: 20px;">
                 </form> -->
                 <div class="col-md-3 text-end" style="margin-top: 20px;margin-right: 100px;position: absolute;right: 0px;">
+                    <a type="button" href="<?php echo $btnCarritoLink ?>" class="btn btn-outline-primary me-2"><?php echo $btnCarrito ?></a>
                     <a type="button" href="<?php echo $btn1Link ?>" class="btn btn-outline-primary me-2"><?php echo $btn1 ?></a>
-                    <a type="button" href="<?php echo $btn2Link ?>" class="btn btn-primary"><?php echo $btn2 ?></a>
+                    <?php if ($val == 0): ?>
+                        <a type="button" href="<?php echo $btn2Link ?>" class="btn btn-primary"><?php echo $btn2 ?></a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

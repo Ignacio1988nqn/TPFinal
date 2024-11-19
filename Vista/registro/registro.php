@@ -2,14 +2,6 @@
 
 require "../../configuracion.php";
 
-session_start();
-
-// si el usuario ya esta logueado, lo redirecciona al login
-if (isset($_SESSION['idususario'])) {
-    header("Location: login.php");
-    exit;
-}
-
 
 ?>
 
@@ -30,25 +22,31 @@ if (isset($_SESSION['idususario'])) {
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-4 col-sm-8 bg-white p-4 rounded shadow">
-                    <form method="POST" action="../accion/verificarRegistro.php" name="form-login" id="form-login">
+                    <h2 class="mb-4">Registrarse</h2>
+                    <form method="POST" action="../accion/verificarRegistro.php" name="form-registro" id="form-registro" novalidate>
                         <div class="form-group mb-3">
-                            <label for="usnombre">Nombre de usuario:</label>
-                            <input type="text" class="form-control" id="usnombre" name="usnombre" required>
+                            <label for="usnombre" class="form-label">Nombre de usuario:</label>
+                            <input type="text" class="form-control" id="usnombre" name="usnombre" placeholder="Min. 5 caracteres." required>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="uspass">Contraseña:</label>
-                            <input type="password" class="form-control" name="uspass" id="uspass" required>
+                            <label for="uspass" class="form-label">Contraseña:</label>
+                            <input type="password" class="form-control" name="uspass" id="uspass" placeholder="Min. 8 caracteres." required>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="uspass">Email:</label>
                             <input type="text" class="form-control" name="usmail" id="usmail" required>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="codigo" class="form-label">Código de verificación:</label>
-                            <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Ingresa el texto de la imagen">
+                            <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Ingrese el texto de la imagen" required>
+                            <div class="invalid-feedback" id="error-codigo"></div>
                         </div>
 
                         <div class="mb-3">
@@ -63,27 +61,17 @@ if (isset($_SESSION['idususario'])) {
                             &nbsp;
                             Generar
                         </div>
+                        <span id="mensajeError"></span>
 
-                        <input type="button" class="btn btn-primary w-100 mb-3" value="Registrarse" onclick="formSubmit()">
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Registrarse</button>
                     </form>
 
                     <p>Si tenes una cuenta, <a class="link-offset-2 link-underline link-underline-opacity-0 " href="../login/login.php">inicia sesion</a>.</p>
-                    
-                    <?php
-                    // Mensajes de error
-                    if ($mensaje = getFlashData('error')) { ?>
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <?php echo $mensaje; ?>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <?php }
-                    ?>
 
                 </div>
             </div>
         </div>
     </div>
-
 
     <!-- script para generar un codigo cada vez que se clickea el boton -->
     <script>
@@ -113,30 +101,13 @@ if (isset($_SESSION['idususario'])) {
         });
     </script>
 
-    
-    <!-- scripts para hashear/encriptar la contraseña con MD5 -->
-    
+    <script src="../assets/bootstrap5.3.3/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../assets/js/JsJQuery/jquery-3.7.1.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
-    <script>
-        function formSubmit() {
-            var password = document.getElementById("uspass").value;
-            //console.log(password);
-            var passhash = CryptoJS.MD5(password).toString();
-
-            
-            // console.log(passhash);
-            document.getElementById("uspass").value = passhash;
-
-            setTimeout(function() {
-                document.getElementById("form-login").submit();
-
-            }, 500);
-        }
-    </script>
-
-
-    <script src="../assets/bootstrap5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/validarRegistro.js"></script>
 
 </body>
 
