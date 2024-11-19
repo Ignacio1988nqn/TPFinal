@@ -85,7 +85,7 @@ class Menu {
                 if($res>0){
                     $row = $base->Registro();
                     $objMenuP = null; 
-                    if ($row['idpadre'] !=null){
+                    if ($row['idpadre'] !=null || $row['idpadre'] != ''){
                         $objMenuP = new Menu();
                         $objMenuP->setIdMenu($row['idpadre']);
                         $objMenuP->cargar();
@@ -102,7 +102,11 @@ class Menu {
     public function insertar(){
         $resp = false;
         $base=new BaseDatos();
-        $sql="INSERT INTO menu (menombre, medescripcion, idpadre, medeshabilitado)  VALUES('".$this->getMeNombre()."','". $this->getMeDescripcion(). "','". $this->getIdPadre()->getIdMenu(). "','". $this->getMeDeshabilitado(). "')";
+        $sql = "INSERT INTO menu (menombre, medescripcion, idpadre, medeshabilitado) 
+        VALUES ('".$this->getMeNombre()."','". $this->getMeDescripcion(). "', 
+                ". ($this->getIdPadre() === NULL ? 'NULL' : "'".$this->getIdPadre()->getIdMenu()."'") .", 
+                '". $this->getMeDeshabilitado() ."')";
+
         if ($base->Iniciar()) {
             if ($elid = $base->Ejecutar($sql)) {
                 $this->setIdMenu($elid);
@@ -119,12 +123,11 @@ class Menu {
     public function modificar(){
         $resp = false;
         $base=new BaseDatos();
-        $deshabilitado = "'".$this->getMeDeshabilitado()."'"; 
-        if ($this->getMeDeshabilitado() == null) {
-            $deshabilitado = 'NULL';
-        }
-        $sql = "UPDATE menu SET menombre= '".$this->getMeNombre()."', medescripcion = '".$this->getMeDescripcion()."' 
-        ,idpadre = '".$this->getIdPadre()->getIdMenu()."',medeshabilitado = ".$deshabilitado." WHERE idmenu = ".$this->getIdMenu()."";
+        $idPadre = $this->getIdPadre() === NULL ? 'NULL' : "'".$this->getIdPadre()->getIdMenu()."'"; 
+        
+        $sql = "UPDATE menu SET menombre = '".$this->getMeNombre()."', medescripcion = '".$this->getMeDescripcion()."', 
+                idpadre = $idPadre, medeshabilitado = '" . $this->getMeDeshabilitado() ."' WHERE idmenu = ".$this->getIdMenu();
+    
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;

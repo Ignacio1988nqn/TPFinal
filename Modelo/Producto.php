@@ -25,7 +25,7 @@ class Producto {
 		$this->idproducto = $idproducto;
 	}
     public function getTipo(){
-		return $this->getTipo();
+		return $this->tipo;
 	}
 
 	public function setTipo($tip){

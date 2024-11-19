@@ -91,6 +91,7 @@ foreach ($listaRoles as $rol) {
                     </div>
                     <button type="button" class="btn btn-primary" onclick="guardar()"
                         style="margin-top: 20px;margin-left: 220px;">Guardar Cambios</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarUsuario()" style="margin-top: 20px;">Eliminar Usuario</button>
                 </div>
             </form>
         </div>
@@ -142,6 +143,7 @@ include_once("../../estructura/footer.php");
         $('input[name="roles[]"]:checked').each(function() {
             rolesSeleccionados.push($(this).val());
         });
+        var habilitado = $('#habilitado').prop('checked') ? 1 : 0;
         $.ajax({
             url: './action/abmUsuarioGuardar.php',
             type: 'post',
@@ -150,7 +152,7 @@ include_once("../../estructura/footer.php");
                 id: $('#id').val(),
                 nombre: $('#nombre').val(),
                 email: $('#email').val(),
-                habilitado: $('#habilitado').prop('checked') ? 1 : 0,
+                habilitado: habilitado,
                 roles: rolesSeleccionados 
             }, 
             success: function(data) {
@@ -162,4 +164,25 @@ include_once("../../estructura/footer.php");
             }
         });
     }
+
+    function eliminarUsuario(){
+        $.ajax({
+            url: './action/abmUsuarioBaja.php', 
+            type: 'post', 
+            dataType: 'json', 
+            data: { id: $('#id').val()} , 
+            success: function(data){
+                if (data.success){
+                    alert("Usuario Eliminado"); 
+                    window.location.href = 'abmUsuarios.php';
+                } else {
+                    alert("No se pudo eliminar el usuario");
+                }
+            }, 
+            error: function(request, status, error){
+                alert(request.responseText); 
+            }
+        }); 
+    }
+
 </script>

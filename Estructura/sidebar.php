@@ -2,9 +2,15 @@
 $session = new Session();
 $val = 9;
 if ($session->validar()) {
-    foreach ($session->getRol() as $rol) {
-        $val = $rol->getIdRol();
+    $rolSelec = $session->getRolSelec(); 
+    if ($rolSelec !== null){
+        $val = $rolSelec; 
+    } else {
+        foreach ($session->getRol() as $rol) {
+            $val = $rol->getIdRol();
+        }
     }
+   
 }
 
 $param['idrol'] = $val;
@@ -18,7 +24,9 @@ $menu = new AbmMenu();
         foreach ($menurolLista as $lis) {
             $param['idmenu'] = $lis->getIdMenu()->getIdMenu();
             $menuItem = $menu->buscar($param);
-            if ($menuItem[0]->getIdPadre() == null) {
+            // if ($menuItem[0]->getIdPadre() == null) {
+            $deshabilitado = $menuItem[0]->getMeDeshabilitado(); 
+            if ($deshabilitado == null || $deshabilitado == '0000-00-00 00:00:00' && $menuItem[0]->getIdPadre() == null){
                 echo "<li>";
                 echo " <a href='" . $menuItem[0]->getMeDescripcion() . "'>";
                 echo "<i class='bx bx-collection'></i>";

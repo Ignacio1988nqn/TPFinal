@@ -49,50 +49,69 @@ $prod = $abmProducto->buscar($param);
 include_once("../../estructura/footer.php");
 ?>
 
+<script src="../assets/js/carrito.js"></script>
+
 </html>
 <script>
     function agregar() {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        const product = urlParams.get('idproducto');
+        const productId = urlParams.get("idproducto");
 
-        var obj = {
-            id: product
+        fetch(`../accion/accionCarrito.php?accion=mostrar`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.estado) {
+                    // Buscar el producto en el carrito
+                    const productoEnCarrito = data.carrito.find(
+                        (producto) => producto.id === parseInt(productId)
+                    );
+
+                    if (productoEnCarrito) {
+                        if (productoEnCarrito.cantidad >= productoEnCarrito.stock) {
+                            alert("Límite de stock alcanzado para este producto.");
+                            return;
+                        }
+                    }
+                    realizarAgregarProducto(productId);
+                } else {
+                    realizarAgregarProducto(productId);
+                }
+            })
+            .catch((error) => {
+                console.error("Error al verificar el carrito:", error);
+                alert("Ocurrió un error al verificar el carrito. Por favor, intenta de nuevo.");
+            });
+    }
+
+    function realizarAgregarProducto(productId) {
+        const obj = {
+            id: productId,
         };
+
         $.ajax({
-            url: './productoAction.php',
-            type: 'post',
-            dataType: 'json',
+            url: "./productoAction.php",
+            type: "post",
+            dataType: "json",
             data: {
-                json: JSON.stringify(obj)
+                json: JSON.stringify(obj),
             },
             success: function(data) {
-
-                if (data['estado']) {
-                    var diiv = document.getElementById("mensajeapp");
-                    document.getElementById("mensajestr").innerHTML = "El producto fue agregado al carrito";
-                    diiv.style.opacity = '100';
-
-                    setTimeout(function() {
-                        var AmountOfActions = 100;
-                        diiv.style.opacity = '100';
-                        var counte = 100;
-                        setInterval(function() {
-                                counte--;
-                                if (counte > 0) {
-                                    diiv.style.opacity = counte / AmountOfActions;
-                                }
-                            },
-                            10);
-                    }, 3000);
-                } else {
+                if (data.estado && data.insert) {
+                    alert("Producto agregado al carrito.");
+                } else if (!data.estado && data.mensaje === "Límite de stock.") {
+                    alert("Límite de stock alcanzado para este producto.");
+                } else if (!data.estado) {
                     window.location.href = "../login/login.php";
+                } else {
+                    alert("No se pudo agregar el producto al carrito.");
                 }
-
             },
             error: function(request, status, error) {
-                alert(request.responseText);
-            }
+                console.error("Error en la solicitud:", request.responseText);
+                alert("Ocurrió un error al agregar el producto. Por favor, intenta de nuevo.");
+            },
         });
     }
+    
 </script>
