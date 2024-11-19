@@ -8,7 +8,7 @@ $abmusuario = new ABMUsuario();
 $param['idusuario'] = $idusuario;
 $usuario = $abmusuario->buscar($param);
 
-if (isset($datos['habilitado'])) {
+if (isset($datos['habilitado']) && $datos['habilitado'] == 1) {
     $usuario[0]->setUsDeshabilitado(null);
 } else {
     $usuario[0]->setUsDeshabilitado(date('Y-m-d H:i:s'));

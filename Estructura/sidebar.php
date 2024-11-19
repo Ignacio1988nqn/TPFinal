@@ -24,12 +24,15 @@ $menu = new AbmMenu();
         foreach ($menurolLista as $lis) {
             $param['idmenu'] = $lis->getIdMenu()->getIdMenu();
             $menuItem = $menu->buscar($param);
-            echo "<li>";
-            echo " <a href='" . $menuItem[0]->getMeDescripcion() . "'>";
-            echo "<i class='bx bx-collection'></i>";
-            echo "<span class='link_name'>" . $menuItem[0]->getMeNombre() . "</span>";
-            echo " </a>";
-            echo " </li>";
+            $deshabilitado = $menuItem[0]->getMeDeshabilitado(); 
+            if ($deshabilitado == null || $deshabilitado == '0000-00-00 00:00:00'){
+                echo "<li>";
+                echo " <a href='" . $menuItem[0]->getMeDescripcion() . "'>";
+                echo "<i class='bx bx-collection'></i>";
+                echo "<span class='link_name'>" . $menuItem[0]->getMeNombre() . "</span>";
+                echo " </a>";
+                echo " </li>";
+           }
         }
         ?>
     </ul>

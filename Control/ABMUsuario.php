@@ -142,8 +142,8 @@ class ABMUsuario
      * @param array $param
      * @return boolean
      */
-    /*
-    public function baja($param)
+
+    public function bajaElimina($param)
     {
         $resp = false;
         if ($this->seteadosCamposClaves($param)) {
@@ -155,7 +155,7 @@ class ABMUsuario
 
         return $resp;
     }
-    */
+    
 
     public function baja($param)
     {

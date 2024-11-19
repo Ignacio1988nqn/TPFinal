@@ -52,6 +52,7 @@ class MenuRol {
                 if($res>0){
                     $row = $base->Registro();
                     $this->setear($row['idmenu'], $row['idrol']);
+                    $resp =true; 
                 }
             }
         } else {
@@ -95,7 +96,8 @@ class MenuRol {
     public function eliminar(){
         $resp = false;
         $base=new BaseDatos();
-        $sql="DELETE FROM menurol WHERE idmenu =".$this->getIdMenu()->getIdMenu()." AND idrol=" . $this->getIdRol()->getIdRol()."";
+        $sql="DELETE FROM menurol WHERE idmenu = ".$this->getIdMenu()->getIdMenu()." AND idrol = " . $this->getIdRol()->getIdRol()."";
+        //var_dump($sql); 
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 return true;
@@ -126,7 +128,7 @@ class MenuRol {
                     $objMenu->cargar();
                     $objRol = new Rol(); 
                     $objRol->setIdRol($row['idrol']); 
-                    $objRol->buscar();
+                    $objRol->cargar2();
                     $obj->setear($objMenu, $objRol);
                     array_push($arreglo, $obj);
                 }               
