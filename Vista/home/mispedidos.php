@@ -43,7 +43,7 @@ foreach ($listacompras as $item) {
     $param['idcompraestadotipo'] = $item->getIdCompraEstadoTipo()->getIdCompraEstadoTipo();
     $estado = $abmestadotipo->buscar($param);
 
-    array_push($listatabla, [$producto[0]->getProNombre(), $estado[0]->getCetDescripcion(), $item->getCeFechaIni(), $estado[0]->getIdCompraEstadoTipo()]);
+    array_push($listatabla, [$producto[0]->getProNombre(), $estado[0]->getCetDescripcion(), $item->getCeFechaIni(), $estado[0]->getIdCompraEstadoTipo(),$idcompra]);
 }
 
 
@@ -59,6 +59,7 @@ foreach ($listacompras as $item) {
                             <th>Producto</th>
                             <th>Fecha Estado</th>
                             <th>Estado</th>
+                            <th>cancelar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,6 +70,12 @@ foreach ($listacompras as $item) {
                                 echo  '<td>' . $listaitem[0] . '</td>';
                                 echo  '<td>' . $listaitem[2] . '</td>';
                                 echo  '<td>' . $listaitem[1] . '</td>';
+                                if ($listaitem[3] == 1) {
+                                    echo  '<td><button type="button" class="btn btn-danger" onclick="cancelar(' . $listaitem[4] . ')">Cancelar</button></td>';
+                                } else {
+                                    echo  '<td><button type="button" class="btn btn-danger" onclick="cancelar(' . $listaitem[4] . ')" disabled>Cancelar</button></td>';
+                                }
+
                                 echo '</tr>';
                             }
                         }
@@ -85,3 +92,40 @@ include_once("../../estructura/footer.php");
 ?>
 
 </html>
+
+<script>
+    function cancelar(id) {
+        $.ajax({
+            url: '../deposito/cancelarVenta.php',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                idcompra: id
+            },
+            success: function(response) {
+                if (response) {
+                    location.reload();
+                    var diiv = document.getElementById("mensajeapp");
+                    document.getElementById("mensajestr").innerHTML = "La compra fue cancelada";
+                    diiv.style.opacity = '100';
+
+                    setTimeout(function() {
+                        var AmountOfActions = 100;
+                        diiv.style.opacity = '100';
+                        var counte = 100;
+                        setInterval(function() {
+                                counte--;
+                                if (counte > 0) {
+                                    diiv.style.opacity = counte / AmountOfActions;
+                                }
+                            },
+                            10);
+                    }, 3000);
+                }
+            },
+            error: function(request, status, error) {
+                alert('Error: ' + request.responseText);
+            }
+        });
+    }
+</script>

@@ -20,3 +20,11 @@ if ($val != 2) {
 </body>
 
 </html>
+<script>
+    $(document).ajaxStart(function() {
+        document.getElementById("spinner").style.display="block";
+    });
+    $(document).ajaxStop(function() {
+        document.getElementById("spinner").style.display="none";
+    });
+</script>

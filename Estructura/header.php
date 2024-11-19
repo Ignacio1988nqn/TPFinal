@@ -76,3 +76,10 @@ if ($val != 0) {
     </header>
 
     <div id="mainContainer" style="display: flex;">
+        <div id=spinner style="background-color: gainsboro; width: 100%;height: 100%; position: absolute;opacity: 0.5;display:none">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status" style="margin-top: 250px;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
