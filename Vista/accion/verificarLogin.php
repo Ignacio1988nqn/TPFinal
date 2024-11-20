@@ -11,9 +11,13 @@ if (isset($datos["usnombre"]) && isset($datos["uspass"]) && $_SERVER["REQUEST_ME
     $session = new Session();
 
     $session->iniciar($nombreUsuario, $passwordHash);
-
+  
     if ($session->validar()) {
-        
+        $usuario = $session->getUsuario(); 
+        if (($usuario->getUsDeshabilitado()) !== "" || $usuario->getUsDeshabilitado() !==null ){
+            header("Location: ../login/login.php?error=2");
+            exit; 
+        } 
         foreach ($session->getRol() as $rol) {
             $val = $rol->getIdRol();
         }

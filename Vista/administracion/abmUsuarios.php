@@ -35,7 +35,7 @@ foreach ($listaRoles as $rol) {
 ?>
 <section class="home-section">
     <div class="right-container">
-        <div id="container" style="margin:50px 75px;height: 87vh;">
+        <div id="container" style="margin:50px 75px; min-height: 87vh; width: 90%; overflow: auto;">
             <div class="bd" style="background-color: white; padding: 60px;border-radius: 10px">
                 <div class="mb-3 row">
                     <form id="selectForm">
@@ -100,7 +100,7 @@ foreach ($listaRoles as $rol) {
     </div>
 </section>
 <?php
-include_once("../../estructura/footer.php");
+include_once("../../Estructura/footer.php");
 ?>
 
 <script>

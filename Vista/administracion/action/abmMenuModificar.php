@@ -15,14 +15,16 @@ if (count($menu)>0){
         if(count($menuPadre)>0){
             $menu[0]->setIdPadre($menuPadre[0]); 
         } else {
-            $menu[0]->setIdPadre($idpadre); 
+            $menu[0]->setIdPadre(null); 
         }
+    } else {
+        $menu[0]->setIdPadre(null); 
     }
 
     //actualiza para modificar
     $menu[0]->setMeNombre($datos['menombre']);
     $menu[0]->setMeDescrpcion($datos['medescripcion']);
-    if (isset($datos['medeshabilitado']) && $datos['medeshabilitado'] == 1) {
+    if (isset($datos['medeshabilitado']) && $datos['medeshabilitado'] == 'on') {
         $menu[0]->setMeDeshabilitado(null); 
     } else {
         $menu[0]->setMeDeshabilitado(date('Y-m-d H:i:s'));  

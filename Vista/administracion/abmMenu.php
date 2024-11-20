@@ -31,7 +31,7 @@ foreach ($listaRoles as $rol) {
 
 <section class="home-section">
     <div class="right-container">
-        <div id="container" style="margin:50px 75px;height: 87vh;">
+        <div id="container" style="margin: 50px 20px; min-height: 87vh; width: 90%; overflow: auto;">
             <div class="bd" style="background-color: white; padding: 60px;border-radius: 10px">
                 <div class="mb-3 row">
                     <form id="selectForm">
@@ -97,7 +97,7 @@ foreach ($listaRoles as $rol) {
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" style="margin-top: 20px;margin-left: 220px;" onclick="guardar()">Guardar</button>
-                    <button type="button" class="btn btn-danger" style="margin-top: 20px;" onclick="borrar()" id="btnEliminar">Eliminar</button>
+                    <button type="button" class="btn btn-danger" style="margin-top: 20px;" onclick="borrar()" id="botonEliminar">Eliminar</button>
             </form>
 
         </div>
@@ -127,7 +127,7 @@ include_once("../../estructura/footer.php");
                 } else {
                     $('#medeshabilitado').prop('checked', false);
                 }
-                $('#accion').val('modificar');
+                
                 var rolesAsignados = response['roles'];
                 $('input[name="roles[]"]').each(function() {
                     var checkbox = $(this);
@@ -137,6 +137,7 @@ include_once("../../estructura/footer.php");
                         checkbox.prop('checked', false);
                     }
                 });
+                $('#accion').val('modificar');
                 document.getElementById('data').style.display = "block";
                 $('#selectRol option[value="' + data['roles'] + '"]').attr("selected", "selected");
             },
@@ -149,8 +150,6 @@ include_once("../../estructura/footer.php");
     function guardar() {
         let accion = $('#accion').val(); //dependendiendo de la accion lo mandaa a una url distinta 
         let url = (accion === 'crear') ? './action/abmMenuAlta.php' : './action/abmMenuModificar.php';
-        let $btnGuardar = $('button[type="submit"]');
-        $btnGuardar.prop('disabled', true);
         $.ajax({
             url: url,
             type: 'POST',
@@ -176,8 +175,9 @@ include_once("../../estructura/footer.php");
         $('#menombre').val('');
         $('#medescripcion').val('');
         $('#idpadre').val('');
-        $('#medeshabilitado').prop('checked', false);
-        $('#selectRol input[type="checkbox"]').prop('checked', false);
+        $('#medeshabilitado').prop('checked',false);
+        $('#selectRol input[type="checkbox"]').prop('checked',false);
+        $('#botonEliminar').prop('disabled',true); 
         document.getElementById('data').style.display = "block";
     }
 

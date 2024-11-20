@@ -19,7 +19,7 @@ if (!$roles || count($roles) == 0) {
     <link rel="stylesheet" href="../assets/bootstrap5.3.3/css/bootstrap.min.css">
 </head>
 
-<body class="bg-light">
+<body>
 
 <div class="d-flex justify-content-center align-items-center mt-4">
     <div class="container">
@@ -34,6 +34,7 @@ if (!$roles || count($roles) == 0) {
                 <form method="POST" action="./procesarRol.php">
                     <div class="form-group mb-3">
                         <label for="rol">Seleccione el rol:</label>
+                        <br>
                         <br>
                         <select class="form-control" id="rol" name="rol">
                             <option value="" >Seleccione...</option>

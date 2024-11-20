@@ -18,7 +18,7 @@ $comboProductos .= '</select>';
 ?>
 <section class="home-section">
     <div class="right-container">
-        <div id="container" style="margin:50px 75px;height: 87vh;">
+        <div id="container" style="margin:50px 75px; min-height: 87vh; width: 90%; overflow: auto;">
             <div class="bd" style="background-color: white; padding: 60px;border-radius: 10px">
                 <div class="mb-3 row">
                     <label for="usuario" class="col-sm-2 col-form-label">Productos</label>

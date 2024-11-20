@@ -3,7 +3,7 @@
 require "../../configuracion.php";
 
 $session = new Session();
-
+$datos = darDatosSubmitted(); 
 if ($session->getUsuario()) {
     header('Location: ' . $PRINCIPAL); // si ya esta logueado lo redirecciona a la pagina principal
     exit;
@@ -43,10 +43,16 @@ if ($session->getUsuario()) {
                         </div>
 
                         <?php
-                        if (isset($_GET['error'])) {
-                            echo "<div class='alert alert-danger' role='alert'>
-                            Usuario o contraseña incorrectos
-                            </div>";
+                        if (isset($datos['error'])) {
+                            if ($datos['error'] == '2' || $datos['error'] == 2){
+                                echo "<div class='alert alert-danger' role='alert'>
+                                Usuario deshabilitado, no puede iniciar sesion. 
+                                </div>";
+                            } else {
+                                echo "<div class='alert alert-danger' role='alert'>
+                                Usuario o contraseña incorrectos
+                                </div>";
+                            }
                         }
                         ?>
 
