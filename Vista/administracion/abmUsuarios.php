@@ -2,7 +2,8 @@
 include_once("../../estructura/header.php");
 include_once("../../estructura/sidebar.php");
 if (!$session->validar()) {
-    redirect('../login/login.php');
+    header('Location: ../login/login.php');
+    exit;
 }
 
 $usuarios = new ABMUsuario();

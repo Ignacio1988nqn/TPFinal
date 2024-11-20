@@ -22,6 +22,37 @@ function darDatosSubmitted(){
     return $datos;
 }
 
+function darDatosSubmittedJSON()
+{
+
+    $datos = [];
+
+    foreach ($_GET as $key => $value) {
+        if (!empty($value)) {
+            $datos[$key] = $value;
+        }
+    }
+
+    foreach ($_POST as $key => $value) {
+        if (!empty($value)) {
+            $datos[$key] = $value;
+        }
+    }
+
+    // Procesar datos enviados como JSON, en este caso solicitudes AJAX
+    $inputJSON = file_get_contents("php://input");
+    $input = json_decode($inputJSON, true);
+    if (is_array($input)) {
+        foreach ($input as $key => $value) {
+            if (!empty($value)) {
+                $datos[$key] = $value;
+            }
+        }
+    }
+
+    return !empty($datos) ? $datos : null;
+}
+
 function verEstructura($e){
     echo "<pre>";
     print_r($e);
