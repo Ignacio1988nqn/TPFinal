@@ -92,13 +92,14 @@ include_once("../../estructura/footer.php");
             dataType: 'json', 
             data: {idProducto: productoId},
             success: function(response){
+                
                 $('#idProducto').val(response.idProducto); 
                 $('#nombre').val(response.proNombre);
                 $('#detalle').val(response.proDetalle);
                 $('#stock').val(response.proStock);
                 $('#accion').val('modificar');   
                 document.getElementById('data').style.display = "block";
-                document.getElementById('dataNuevo').style.display = "none";
+                // document.getElementById('dataNuevo').style.display = "none";
             }, 
             error:function(request, status, error) {
                 alert('Error: ' + request.responseText);
@@ -113,7 +114,7 @@ include_once("../../estructura/footer.php");
         $('#detalle').val('');
         $('#stock').val('');
         document.getElementById('data').style.display = "block"; 
-        document.getElementById('dataNuevo').style.display = "none";
+        // document.getElementById('dataNuevo').style.display = "none";
     }
 
     function guardarProducto(){
@@ -163,7 +164,7 @@ include_once("../../estructura/footer.php");
 
     function nuevo() {
         document.getElementById('data').style.display = "none";
-        document.getElementById('dataNuevo').style.display = "block";
+        // document.getElementById('dataNuevo').style.display = "block";
         $('#accion').val('crear'); 
     }
 

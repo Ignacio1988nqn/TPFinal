@@ -21,7 +21,7 @@ if ($rolSel) {
             header("Location: ../administracion/admin.php");
             break;
         case 3:
-            header("Location: "); //agregar ruta deposito 
+            header("Location: ../deposito/depo.php");
             break;
         default:
             echo "Rol desconocido.";

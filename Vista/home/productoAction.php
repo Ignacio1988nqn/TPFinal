@@ -5,7 +5,6 @@ $json = filter_input(INPUT_POST, 'json');
 $decoded_json = json_decode($json);
 $idProducto = $decoded_json->id;
 
-/*
 $session = new Session();
 if (!$session->validar()) {
     $retorno['estado'] = false;
@@ -41,25 +40,3 @@ if (!$session->validar()) {
 }
 
 echo json_encode($retorno);
-*/
-
-// Funcionan ambas
-
-$session = new Session();
-
-$decoded_json = json_decode($json);
-$idProducto = $decoded_json->id;
-
-if (!$session->validar()) {
-    $retorno['estado'] = false;
-} else {
-    $retorno['estado'] = true;
-    $abmCarrito = new AbmCarrito();
-    $idUsuario = $session->getUsuario()->getIdUsuario();
-    $abmCarrito->agregarProductoAlCarrito($idProducto, $idUsuario);
-    $retorno['insert'] = true;
-}
-
-echo json_encode($retorno);
-
-?>
