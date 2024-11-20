@@ -8,6 +8,8 @@ if (isset($datos['idProducto'])){
     $param['pronombre'] = $datos['nombre']; 
     $param['prodetalle'] = $datos['detalle']; 
     $param['procantstock'] = $datos['stock']; 
+    $param['tipo'] = $datos['tipo'];
+
 
     $abmProducto = new AbmProducto(); 
     if ($abmProducto->modificacion($param)){

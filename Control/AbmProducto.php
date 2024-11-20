@@ -117,4 +117,8 @@ class AbmProducto {
         $arreglo = Producto::listar($where);  
         return $arreglo;
     }
+
+    public function getLastInsertedID(){
+        return Producto::getLastInsertId();
+    }
 }
