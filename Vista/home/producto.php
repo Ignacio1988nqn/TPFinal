@@ -29,14 +29,14 @@ $prod = $abmProducto->buscar($param);
                     </div>
                 </div>
             </div>
-            <div style="padding:  5px 60px 0 60px">
+            <!-- <div style="padding:  5px 60px 0 60px">
                 <div class=" mb-3 row">
                     <div class="col-sm-10">
                         <p>Stock: <?php echo $prod[0]->getProCantStock(); ?>
                         </p>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-md-3 text-end" style="width: 35%;margin-top: 40px;margin-left: 15px;">
                 <a type="button" class="btn btn-primary" onclick="agregar()">Agregar al carrito</a>
             </div>

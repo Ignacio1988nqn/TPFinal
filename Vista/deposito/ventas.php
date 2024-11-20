@@ -95,24 +95,29 @@ include_once("../../estructura/footer.php");
                 idcompra: id
             },
             success: function(response) {
-                if (response) {
-                    location.reload();
-                    var diiv = document.getElementById("mensajeapp");
-                    document.getElementById("mensajestr").innerHTML = "Cambio de estado exitoso";
-                    diiv.style.opacity = '100';
+                if (response['insert']) {
+                    var mensaje = "Cambio de estado exitoso";
+                } else {
+                    var mensaje = "No hay stock para este producto, no se pudo actualizar la compra";
+                }
+                var diiv = document.getElementById("mensajeapp");
+                document.getElementById("mensajestr").innerHTML = mensaje;
+                diiv.style.opacity = '100';
 
-                    setTimeout(function() {
-                        var AmountOfActions = 100;
-                        diiv.style.opacity = '100';
-                        var counte = 100;
-                        setInterval(function() {
-                                counte--;
-                                if (counte > 0) {
-                                    diiv.style.opacity = counte / AmountOfActions;
-                                }
-                            },
-                            10);
-                    }, 3000);
+                setTimeout(function() {
+                    var AmountOfActions = 100;
+                    diiv.style.opacity = '100';
+                    var counte = 100;
+                    setInterval(function() {
+                            counte--;
+                            if (counte > 0) {
+                                diiv.style.opacity = counte / AmountOfActions;
+                            }
+                        },
+                        10);
+                }, 4000);
+                if (response['insert']) {
+                    location.reload();
                 }
             },
             error: function(request, status, error) {

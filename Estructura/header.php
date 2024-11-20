@@ -2,19 +2,25 @@
 require "../../configuracion.php";
 
 $session = new Session();
-$val = 0;
+$val = 9;
+$rolSelec = $session->getRolSelec();
 if ($session->validar()) {
-    foreach ($session->getRol() as $rol) {
-        $val = $rol->getIdRol();
+    if ($rolSelec !== null) {
+        $val = $rolSelec;
+    } else {
+        foreach ($session->getRol() as $rol) {
+            $val = $rol->getIdRol();
+        }
     }
 }
+
 $btn1 = "Ingresá";
 $btn1Link = "../login/login.php";
 $btn2 = "Creá tu cuenta";
 $btn2Link = "../registro/registro.php";
 $btnCarrito = "Carrito";
 $btnCarritoLink = "../carrito/carrito.php";
-if ($val != 0) {
+if ($val != 9) {
     $btn1 = "Log Out";
     $btn1Link = "../logout/logout.php";
 }
@@ -53,24 +59,25 @@ if ($val != 0) {
         <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
             <img src="../assets/image/logo/imagotipo-png.png" style="float: left;width: 220px;">
             <div class="d-flex align-items-center">
-                <!-- <form class="w-100 me-3">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search"
-                        style="width: 640px;margin-left: -87px;margin-top: 20px;">
-                </form> -->
                 <div class="col-md-3 text-end" style="margin-top: 20px;margin-right: 100px;position: absolute;right: 0px;">
-                    <a type="button" href="<?php echo $btnCarritoLink ?>" class="btn btn-outline-primary me-2"><?php echo $btnCarrito ?></a>
+                    <?php if ($rolSelec !== null): ?>
+                        <a type="button" href="../accion/seleccionarRol.php" class="btn btn-outline-primary me-2">Cambiar rol</a>
+                    <?php endif; ?>
+                    <?php if ($val == 1): ?>
+                        <a type="button" href="<?php echo $btnCarritoLink ?>" class="btn btn-outline-primary me-2"><?php echo $btnCarrito ?></a>
+                    <?php endif; ?>
                     <a type="button" href="<?php echo $btn1Link ?>" class="btn btn-outline-primary me-2"><?php echo $btn1 ?></a>
-                    <?php if ($val == 0): ?>
+                    <?php if ($val == 9): ?>
                         <a type="button" href="<?php echo $btn2Link ?>" class="btn btn-primary"><?php echo $btn2 ?></a>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
         <div class="mensajeapp" id="mensajeapp" name="mensajeapp" class="col-md-4 col-sm-12 mb-30"
-            style="opacity : 0;z-index: 1; right: 40px; top: 30px; position: fixed;">
+            style="opacity : 0;z-index: 1; right: 40px; top: 100px; position: fixed;">
             <div class="card text-white bg-success card-box">
                 <div class="card-header">Amazon Libre</div>
-                <hr style="width: 140%; margin-left: -55px;">
+                <hr style="margin: 1px; margin-left: -55px;">
                 <div class="card-body">
                     <h5 id="mensajestr" class="card-title text-white"></h5>
                 </div>

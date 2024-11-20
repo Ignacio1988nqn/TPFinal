@@ -9,6 +9,8 @@ $abmproducto = new AbmProducto();
 $abmcompra = new AbmCompra();
 $abmusuario = new ABMUsuario();
 
+$retorno['insert'] = true;
+
 $param['cefechafin'] = "NULL";
 $idcompra = $datos['idcompra'];
 $param['idcompra'] = $idcompra;
@@ -27,10 +29,14 @@ $usuario = $abmusuario->buscar($param);
 if ($estado == 1) {
     if ($producto[0]->getProCantStock() > 0) {
         $nuevoestado = 2;
+        $producto[0]->setProCantStock($producto[0]->getProCantStock()-1);
+        $producto[0]->modificar();
         $subject = "Estamos preparando tu pedido!";
         $message = "Hola, ".$usuario[0]->getUsNombre(). " tu pedido ya esta siendo preparado!";
     } else {
-        echo json_encode(['error' => 'No hay stock para el producto']);
+        $retorno['insert'] = false;
+        echo json_encode($retorno);
+        return;
     }
 } elseif ($estado == 2) {
     $nuevoestado = 3;
@@ -56,4 +62,4 @@ $to = $usuario[0]->getUsMail();
 $headers = "From:" . $from;
 mail($to,$subject,$message, $headers);
 
-echo json_encode(['success' => true]); 
+echo json_encode($retorno); 
