@@ -2,10 +2,6 @@
 
 require "../../configuracion.php";
 
-if (!$session->validar()) {
-    header('Location: ../login/login.php');
-    exit;
-}
 
 ?>
 
