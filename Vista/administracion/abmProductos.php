@@ -111,7 +111,7 @@ include_once("../../estructura/footer.php");
                 // document.getElementById('dataNuevo').style.display = "none";
             },
             error: function(request, status, error) {
-                alert('Error: ' + request.responseText);
+                swal("No se pudo encontrar el producto");
             }
         });
     }
@@ -150,14 +150,31 @@ include_once("../../estructura/footer.php");
             contentType: false,
             success: function(response) {
                 if (accion === 'crear') {
-                    alert("Nuevo producto agregado con éxito");
+                    swal({
+                        title: "Perfecto",
+                        text: "Producto agregado con exito",
+                        icon: "success",
+                        button: "Recargar"
+                    });
                 } else {
-                    alert("Producto modificado con éxito");
+                    swal({
+                        title: "Perfecto",
+                        text: "Producto modificado con exito",
+                        icon: "success",
+                        button: "Recargar"
+                    });
                 }
+                setTimeout(function() {
                 window.location.href = 'abmProductos.php';
+            }, 2000)
             },
             error: function(request, status, error) {
-                alert('Error: ' + request.responseText);
+                swal({
+                title: "Error.",
+                text: "No se pudo guardar el cambio",
+                icon: "error",
+                button: "Cerrar"
+                });
             }
         });
     }
@@ -171,11 +188,23 @@ include_once("../../estructura/footer.php");
                 idProducto: $('#idProducto').val()
             },
             success: function(response) {
-                alert('Producto Eliminado con Exito');
+                swal({
+                    title: "Perfecto",
+                    text: "Producto eliminado con exito",
+                    icon: "success",
+                    button: "Recargar"
+                });
+                setTimeout(function() {
                 window.location.href = 'abmProductos.php';
+            }, 2000)
             },
             error: function(request, status, error) {
-                alert('Error: ' + request.responseText);
+                swal({
+                title: "Error.",
+                text: "No se logro eliminar el producto",
+                icon: "error",
+                button: "Intentar nuevamente"
+                });
             }
         });
     }
@@ -199,11 +228,14 @@ include_once("../../estructura/footer.php");
             success: function(response) {
                 if (response.success) {
                     $('#vistaPrevia').attr('src', '../../assets/image/' + response.nombre).show();
-                    alert('La imagen se subio exitosamente');
+                    swal("Imagen subida con exito");
+                    setTimeout(function() {
+                    window.location.href = 'abmUsuarios.php';
+                }, 2000)
                 }
             },
             error: function(request, status, error) {
-                alert('Error: ' + request.responseText);
+                swal("La imagen no se pudo subir");
             }
         });
     }

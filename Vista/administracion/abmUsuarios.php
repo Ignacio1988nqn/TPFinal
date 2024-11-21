@@ -134,7 +134,12 @@ include_once("../../Estructura/footer.php");
                 
             },
             error: function(request, status, error) {
-                alert(request.responseText);
+                swal({
+                title: "Error.",
+                text: "No se encontro al usuario",
+                icon: "error",
+                button: "Cerrar"
+                });
             }
         });
     }
@@ -157,11 +162,23 @@ include_once("../../Estructura/footer.php");
                 roles: rolesSeleccionados 
             }, 
             success: function(data) {
-                alert("Los Cambios se Realizaron exitosamente");  
+                swal({
+                    title: "Perfecto",
+                    text: "Los cambios se realizaron con exito",
+                    icon: "success",
+                    button: "Recargar"
+                });
+                setTimeout(function() {
                 window.location.href = 'abmUsuarios.php';
+            }, 2000)
             },
             error: function(request, status, error) {
-                alert(request.responseText);
+                swal({
+                title: "Error.",
+                text: "No se pudieron hacer las modificaciones",
+                icon: "error",
+                button: "Cerrar"
+                });
             }
         });
     }
@@ -174,14 +191,31 @@ include_once("../../Estructura/footer.php");
             data: { id: $('#id').val()} , 
             success: function(data){
                 if (data.success){
-                    alert("Usuario Eliminado"); 
-                    window.location.href = 'abmUsuarios.php';
+                    swal({
+                        title: "Error.",
+                        text: "No se pudo eliminar al usuario",
+                        icon: "error",  // Ícono de error
+                        button: "Recargar"
+                    });
+                    setTimeout(function() {
+                        window.location.href = 'abmUsuarios.php';
+                    }, 2000)
                 } else {
-                    alert("No se pudo eliminar el usuario");
+                    swal({
+                        title: "Error",
+                        text: "No se pudo eliminar al usuario",
+                        icon: "error", 
+                        button: "Aceptar"
+                    });
                 }
             }, 
             error: function(request, status, error){
-                alert(request.responseText); 
+                swal({
+                    title: "Error",
+                    text: "No se pudo eliminar al usuario",
+                    icon: "error",  
+                    button: "Aceptar"
+                });
             }
         }); 
     }

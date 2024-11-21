@@ -142,7 +142,7 @@ include_once("../../estructura/footer.php");
                 $('#selectRol option[value="' + data['roles'] + '"]').attr("selected", "selected");
             },
             error: function(request, status, error) {
-                alert('Error al cargar el menú: ' + request.responseText);
+                swal("Error al cargar menu");
             }
         });
     }
@@ -157,14 +157,31 @@ include_once("../../estructura/footer.php");
             data: $('#formMenu').serialize(),
             success: function(response) {
                 if (response.success) {
-                    alert('Menú guardado con éxito');
-                    window.location.href = 'abmMenu.php';
+                    swal({
+                        title: "Perfecto",
+                        text: "Menu cargado con exito",
+                        icon: "success",
+                        button: "Cargar"
+                    });
+                    setTimeout(function() {
+                        window.location.href = 'abmMenu.php';
+                    }, 2000)
                 } else {
-                    alert('No se pudo modificar: ' + response.error);
+                    swal({
+                    title: "Error.",
+                    text: "No se logro guardar el menu",
+                    icon: "error",
+                    button: "Intente nuevamente"
+                    });
                 }
             },
             error: function(request, status, error) {
-                alert('Error al guardar el menú: ' + request.responseText);
+                swal({
+                title: "Error.",
+                text: "Error al guardar el menu",
+                icon: "error",
+                button: "Intente nuevamente"
+                });
             }
         });
     }
@@ -191,11 +208,23 @@ include_once("../../estructura/footer.php");
                 idmenu: idMenu
             },
             success: function(response) {
-                alert('Menú eliminado con éxito');
-                window.location.href = 'abmMenu.php';
+                swal({
+                    title: "Perfecto",
+                    text: "Menu eliminado con exito",
+                    icon: "success",
+                    button: "Cargar"
+                });
+                setTimeout(function() {
+                    window.location.href = 'abmMenu.php';
+                }, 2000)
             },
             error: function(request, status, error) {
-                alert('Error al eliminar el menú: ' + request.responseText);
+                swal({
+                title: "Error.",
+                text: "Error al eliminar el menu",
+                icon: "error",
+                button: "Intentar nuevamente"
+                });
             }
         });
     }

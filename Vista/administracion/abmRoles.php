@@ -85,8 +85,10 @@ include_once("../../estructura/footer.php");
     function buscar() {
         const selectedRol = $('#rol').val(); //valor del select
         if (!selectedRol) {
-            alert("Por favor selecciona un rol.");
-            return;
+            swal("Por favor, selecciona un rol");
+            setTimeout(function() {
+                window.location.href = 'abmRoles.php';
+            }, 2000);
         }
         $.ajax({
             url: './action/abmRolBuscar.php',
@@ -103,7 +105,12 @@ include_once("../../estructura/footer.php");
                 $('#idrol').val(data.idrol);
             },
             error: function(request, status, error) {
-                alert('Error: ' + request.responseText);
+               swal({
+                title: "Error.",
+                text: "No se encontro el rol",
+                icon: "error",
+                button: "Intentar nuevamente"
+                });
             }
         });
     }
@@ -120,12 +127,23 @@ include_once("../../estructura/footer.php");
             dataType: 'json',
             data: $('form#formModificar').serialize(),
             success: function(data) {
-
-                alert("Rol modificado con exito");
+                swal({
+                    title: "Perfecto",
+                    text: "Los cambios se realizaron con exito",
+                    icon: "success",
+                    button: "Recargar"
+                });
+                setTimeout(function() {
                 window.location.href = 'abmRoles.php';
+                }, 2000)
             },
             error: function(request, status, error) {
-                alert('Error: ' + request.responseText);
+                swal({
+                title: "Error.",
+                text: "No se pudieron guardar los datos",
+                icon: "error",
+                button: "Cerrar"
+                });
             }
         });
     }
@@ -139,11 +157,23 @@ include_once("../../estructura/footer.php");
                 descripcion: $('#descripcionNuevo').val()
             },
             success: function(response) {
-                alert("Nuevo rol agregado con exito");
+                swal({
+                    title: "Perfecto",
+                    text: "Nuevo rol guardado con exito",
+                    icon: "success",
+                    button: "Recargar"
+                });
+                setTimeout(function() {
                 window.location.href = 'abmRoles.php';
+                }, 2000)
             },
             error: function(request, status, error) {
-                alert('Error: ' + request.responseText);
+                swal({
+                title: "Error.",
+                text: "No se pudo generar el nuevo rol",
+                icon: "error",
+                button: "Cerrar"
+                });
             }
         });
     }
@@ -157,11 +187,23 @@ include_once("../../estructura/footer.php");
                 rol: $('#rol').val()
             },
             success: function(response) {
-                alert("Rol Eliminado con exito");
+                swal({
+                    title: "Perfecto",
+                    text: "Rol eliminado con exito",
+                    icon: "success",
+                    button: "Volver"
+                });
+                setTimeout(function() {
                 window.location.href = 'abmRoles.php';
+                }, 2000)
             },
             error: function(request, status, error) {
-                alert('Error: ' + request.responseText);
+                swal({
+                title: "Error.",
+                text: "No se logro eliminar el rol",
+                icon: "error",
+                button: "Cerrar"
+                });
             }
         });
     }
