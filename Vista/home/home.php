@@ -59,11 +59,12 @@ $pc = $abmProducto->buscar($param);
                     <?php
                     if ($hogar) {
                         for ($x = 0; $x < (count($hogar) < 4 ? count($hogar) : 4); $x++) {
-
-                            echo "<div class='col'> <img src='../assets/image/" . $hogar[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
-                            onclick='verProducto(" . $hogar[$x]->getIdProducto() . ")' style='cursor: pointer;'>";
-                            echo "<p>" . $hogar[$x]->getProNombre() . "</p>";
-                            echo "</div>";
+                            if ($hogar[$x]->getProCantStock()) {
+                                echo "<div class='col'> <img src='../assets/image/" . $hogar[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
+                                onclick='verProducto(" . $hogar[$x]->getIdProducto() . ")' style='cursor: pointer;'>";
+                                echo "<p>" . $hogar[$x]->getProNombre() . "</p>";
+                                echo "</div>";
+                            }
                         }
                     }
                     ?>
@@ -76,10 +77,12 @@ $pc = $abmProducto->buscar($param);
                     <?php
                     if ($celulares) {
                         for ($x = 0; $x < (count($celulares) < 4 ? count($celulares) : 4); $x++) {
-                            echo "<div class='col'> <img src='../assets/image/" . $celulares[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
+                            if ($celulares[$x]->getProCantStock()) {
+                                echo "<div class='col'> <img src='../assets/image/" . $celulares[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
                          onclick='verProducto(" . $celulares[$x]->getIdProducto() . ")' style='cursor: pointer;'>";
-                            echo "<p>" . $celulares[$x]->getProNombre() . "</p>";
-                            echo "</div>";
+                                echo "<p>" . $celulares[$x]->getProNombre() . "</p>";
+                                echo "</div>";
+                            }
                         }
                     }
                     ?>
@@ -92,10 +95,12 @@ $pc = $abmProducto->buscar($param);
                     <?php
                     if ($pc) {
                         for ($x = 0; $x < (count($pc) < 4 ? count($pc) : 4); $x++) {
-                            echo "<div class='col'> <img src='../assets/image/" . $pc[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
+                            if ($pc[$x]->getProCantStock()) {
+                                echo "<div class='col'> <img src='../assets/image/" . $pc[$x]->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
                          onclick='verProducto(" . $pc[$x]->getIdProducto() . ")' style='cursor: pointer;'>";
-                            echo "<p>" . $pc[$x]->getProNombre() . $pc[$x]->getIdProducto() . "</p>";
-                            echo "</div>";
+                                echo "<p>" . $pc[$x]->getProNombre() . $pc[$x]->getIdProducto() . "</p>";
+                                echo "</div>";
+                            }
                         }
                     }
                     ?>

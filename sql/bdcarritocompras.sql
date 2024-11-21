@@ -75,15 +75,20 @@ INSERT INTO `compraestadotipo` (`idcompraestadotipo`, `cetdescripcion`, `cetdeta
 -- Nuevos datos para los test
 
 INSERT INTO menu (idmenu, menombre, medescripcion, idpadre, medeshabilitado) VALUES
-(1, 'Home', './home.php', NULL, NULL),
-(2, 'Categorias', 'kkkkk', NULL, NULL),
+(1, 'Home', '../home/home.php', NULL, NULL),
+(2, 'Categorias', '', NULL, NULL),
 (3, 'Mi cuenta', '../home/micuenta.php', NULL, NULL),
-(4, 'Home', './admin.php', NULL, NULL),
-(5, 'ABM Usuarios', './abmUsuarios.php', NULL, '2024-11-13 11:30:50'),
-(6, 'ABM Roles', './abmRoles.php', NULL, '2024-11-13 11:30:50'),
-(7, 'ABM Menú', './abmMenu.php', NULL, '2024-11-13 11:30:50'),
-(8, 'ABM Productos', './abmProductos.php', NULL, '2024-11-13 11:30:50'),
-(9, 'Mis Pedidos ', '../home/mispedidos.php', NULL, '2024-11-13 11:30:50');
+(4, 'Home', '../administracion/admin.php', NULL, NULL),
+(5, 'ABM Usuarios', '../administracion/abmUsuarios.php', NULL, NULL),
+(6, 'ABM Roles', '../administracion/abmRoles.php', NULL, NULL),
+(7, 'ABM Menú', '../administracion/abmMenu.php', NULL, NULL),
+(8, 'ABM Productos', '../administracion/abmProductos.php', NULL, NULL),
+(9, 'Mis Pedidos ', '../home/mispedidos.php', NULL, NULL),
+(10, 'Hogar', '../home/hogar.php', 2, NULL),
+(11, 'Celulares', '../home/celulares.php', 2, NULL),
+(12, 'Informática', '../home/informatica.php', 2, NULL),
+(13, 'Home', '../deposito/depo.php', NULL, NULL),
+(14, 'ventas', '../deposito/ventas.php', NULL, NULL);
 
 
 INSERT INTO rol (idrol, rodescripcion) VALUES

@@ -44,7 +44,7 @@ foreach ($listacompras as $item) {
     $param['idcompraestadotipo'] = $item->getIdCompraEstadoTipo()->getIdCompraEstadoTipo();
     $estado = $abmestadotipo->buscar($param);
 
-    array_push($listatabla, [$producto[0]->getProNombre(), $estado[0]->getCetDescripcion(), $item->getCeFechaIni(), $estado[0]->getIdCompraEstadoTipo(), $idcompra]);
+    array_push($listatabla, [$producto[0]->getProNombre(), $estado[0]->getCetDescripcion(), $item->getCeFechaIni(), $estado[0]->getIdCompraEstadoTipo(), $idcompra,$compraitem[0]->getCiCantidad(),$producto[0]->getIdProducto()]);
 }
 
 ?>
@@ -59,6 +59,7 @@ foreach ($listacompras as $item) {
                         <thead>
                             <tr>
                                 <th>Producto</th>
+                                <th>Cantidad</th>
                                 <th>Sacar del carrito</th>
                             </tr>
                         </thead>
@@ -67,6 +68,7 @@ foreach ($listacompras as $item) {
                             foreach ($listatabla as $listaitem) {
                                 echo '<tr>';
                                 echo  '<td>' . $listaitem[0] . '</td>';
+                                echo  '<td>' . $listaitem[5] . '</td>';
                                 echo  '<td><button type="button" class="btn btn-danger" onclick="cancelar(' . $listaitem[4] . ')">Cancelar</button></td>';
                                 echo '</tr>';
                             }
@@ -80,7 +82,6 @@ foreach ($listacompras as $item) {
                     <button class="btn btn-primary" type="button" onclick="comprar()">Confirmar compra</button>
                     <button class="btn btn-danger" type="button" onclick="vaciar()">Vaciar carrito</button>
                 </div>
-
             </div>
         </div>
     </div>

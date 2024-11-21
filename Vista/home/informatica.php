@@ -16,10 +16,12 @@ $pc = $abmProducto->buscar($param);
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
                     <?php
                     foreach ($pc as $item) {
-                        echo "<div class='col'> <img src='../assets/image/" . $item->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
+                        if ($item->getProCantStock()) {
+                            echo "<div class='col'> <img src='../assets/image/" . $item->getIdProducto() . ".jpg' class='d-block w-100' alt='...'
                          onclick='verProducto(" . $item->getIdProducto() . ")' style='cursor: pointer;'>";
-                        echo "<p>" . $item->getProNombre() . "</p>";
-                        echo "</div>";
+                            echo "<p>" . $item->getProNombre() . "</p>";
+                            echo "</div>";
+                        }
                     }
                     ?>
                 </div>
@@ -30,6 +32,7 @@ $pc = $abmProducto->buscar($param);
 <?php
 include_once("../../estructura/footer.php");
 ?>
+
 </html>
 <script>
     function verProducto(id) {
