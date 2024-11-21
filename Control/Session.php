@@ -24,23 +24,33 @@ class Session
         if (count($resultado) > 0) {
             $usuario = $resultado[0];
             $_SESSION['idusuario'] = $usuario->getIdUsuario();
-            //maneja los roles en caso de que sean dos o mas 
-            
+
+            // Maneja los roles en caso de que sean dos o más
             $abmUsuarioRol = new ABMUsuarioRol();
-            $idUsuario = $_SESSION['idusuario']; 
+            $idUsuario = $_SESSION['idusuario'];
             $roles = $abmUsuarioRol->buscar(['idusuario' => $idUsuario]);
-            if (count($roles)>1){
-                //var_dump($roles);
-                $_SESSION['roles'] = $roles; 
-                header("Location: /TPFinal/Vista/accion/seleccionarRol.php");
+
+            if (count($roles) > 1) {
+                $_SESSION['roles'] = $roles;
+                // manda un JSON
+                echo json_encode([
+                    "success" => true,
+                    "redirect" => "../accion/seleccionarRol.php",
+                    "message" => "Inicio de sesión exitoso. Seleccione un rol."
+                ]);
                 exit();
-            } 
+            }
+
             $resp = true;
         } else {
             $this->cerrar();
         }
         return $resp;
     }
+    
+
+    
+
 
 
     public function validar()
@@ -97,21 +107,41 @@ class Session
         return $resp;
     }
 
-    public function setRoles($roles) {
+    public function setRoles($roles)
+    {
         $_SESSION['roles'] = $roles;
     }
 
     //setea en caso de mas de un rol seleccionado 
-    public function setRol($rol){
-        $_SESSION['rolSelec'] = $rol; 
+    public function setRol($rol)
+    {
+        $_SESSION['rolSelec'] = $rol;
     }
 
     //obtiene el valor de un rol seleccionado en caso de mas de un rol
-    public function getRolSelec(){
-        $rol = null; 
-        if (isset($_SESSION['rolSelec'])){
-            $rol = $_SESSION['rolSelec']; 
+    public function getRolSelec()
+    {
+        $rol = null;
+        if (isset($_SESSION['rolSelec'])) {
+            $rol = $_SESSION['rolSelec'];
         }
-        return $rol; 
+        return $rol;
+    }
+
+
+    // get y set para el codigo de verif
+    public function setCodVerif($codigo, $codigoVal)
+    {
+        $_SESSION[$codigo] = $codigoVal;
+    }
+    public function getCodVerif($codigo)
+    {
+        return $_SESSION[$codigo] ?? null;
+    }
+
+    // vaciar campo del codigo
+    public function remover($codigo)
+    {
+        unset($_SESSION[$codigo]);
     }
 }

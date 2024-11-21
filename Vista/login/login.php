@@ -2,12 +2,7 @@
 
 require "../../configuracion.php";
 
-$session = new Session();
-$datos = darDatosSubmitted(); 
-if ($session->getUsuario()) {
-    header('Location: ' . $PRINCIPAL); // si ya esta logueado lo redirecciona a la pagina principal
-    exit;
-}
+$datos = darDatosSubmitted();
 
 ?>
 
@@ -20,6 +15,7 @@ if ($session->getUsuario()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../assets/bootstrap5.3.3/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-light">
@@ -42,20 +38,8 @@ if ($session->getUsuario()) {
                             <div class="invalid-feedback">Ingrese una contraseña.</div>
                         </div>
 
-                        <?php
-                        if (isset($datos['error'])) {
-                            if ($datos['error'] == '2' || $datos['error'] == 2){
-                                echo "<div class='alert alert-danger' role='alert'>
-                                Usuario deshabilitado, no puede iniciar sesion. 
-                                </div>";
-                            } else {
-                                echo "<div class='alert alert-danger' role='alert'>
-                                Usuario o contraseña incorrectos
-                                </div>";
-                            }
-                        }
-                        ?>
-
+                        <span id="mensajeError"></span>
+                        
                         <button type="submit" class="btn btn-primary w-100 mb-3">Iniciar sesion</button>
                     </form>
 
@@ -66,31 +50,13 @@ if ($session->getUsuario()) {
         </div>
     </div>
 
-    <!-- validar y hashear contraseña antes de enviar -->
-    <script>
-        const form = document.getElementById("form-login");
-        form.addEventListener("submit", function(event) {
-            // validacion manual
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-                form.classList.add("was-validated");
-                return;
-            }
-
-            // hashear contraseña
-            const passwordField = document.getElementById("uspass");
-            const hashedPassword = CryptoJS.MD5(passwordField.value).toString();
-            passwordField.value = hashedPassword;
-
-            form.classList.add("was-validated");
-        });
-    </script>
-
-
     <script src="../assets/bootstrap5.3.3/js/bootstrap.bundle.min.js"></script>
 
+    <script src="../assets/js/JsJQuery/jquery-3.7.1.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <script src="../assets/js/validarLogin.js"></script>
 
 </body>
 
