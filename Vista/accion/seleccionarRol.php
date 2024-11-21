@@ -5,8 +5,14 @@ $session = new Session();
 $roles = $session->getRol();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $rolSeleccionado = $datos['rol'];
+ 
+    $rolSeleccionado = false;
+    
+    if (isset($datos['rol'])) {
+        $rolSeleccionado = $datos['rol'];
+    } else {
+        $error = "No se seleccionó ningún rol.";
+    }
 
     if ($rolSeleccionado) {
         $rolValido = false;
@@ -51,9 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h4>Tiene más de un rol, elija con cuál ingresar</h4>
                 <br><br><br><br>
                 <div class="col-md-4 col-sm-8 bg-white p-4 rounded shadow">
-                    <?php if (isset($error)): ?>
-                        <div class="alert alert-danger"><?php echo $error; ?></div>
-                    <?php endif; ?>
                     <form method="POST" action="">
                         <div class="form-group mb-3">
                             <label for="rol">Seleccione el rol:</label>
@@ -65,6 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <?php if (isset($error)): ?>
+                            <div class="alert alert-danger"><?php echo $error; ?></div>
+                        <?php endif; ?>
                         <button type="submit" class="btn btn-primary w-100">Entrar</button>
                     </form>
                 </div>
