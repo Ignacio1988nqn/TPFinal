@@ -27,12 +27,12 @@ $param['idusuario'] = $compra[0]->getIdUsuario()->getIdUsuario();
 $usuario = $abmusuario->buscar($param);
 
 if ($estado == 1) {
-    if ($producto[0]->getProCantStock() > 0) {
+    if ($producto[0]->getProCantStock() >= $compraitem[0]->getCiCantidad()) {
         $nuevoestado = 2;
-        $producto[0]->setProCantStock($producto[0]->getProCantStock()-1);
+        $producto[0]->setProCantStock($producto[0]->getProCantStock() - $compraitem[0]->getCiCantidad());
         $producto[0]->modificar();
         $subject = "Estamos preparando tu pedido!";
-        $message = "Hola, ".$usuario[0]->getUsNombre(). " tu pedido ya esta siendo preparado!";
+        $message = "Hola, " . $usuario[0]->getUsNombre() . " tu pedido ya esta siendo preparado!";
     } else {
         $retorno['insert'] = false;
         echo json_encode($retorno);
@@ -41,11 +41,11 @@ if ($estado == 1) {
 } elseif ($estado == 2) {
     $nuevoestado = 3;
     $subject = "Tu pedido ya esta en camino!";
-    $message = "Hola, ".$usuario[0]->getUsNombre(). " tu pedido ya esta en camino!";
+    $message = "Hola, " . $usuario[0]->getUsNombre() . " tu pedido ya esta en camino!";
 } elseif ($estado == 3) {
     $nuevoestado = 6;
     $subject = "Compra finalizada";
-    $message = "Muchas gracias ".$usuario[0]->getUsNombre(). " por tu compra, te invitamos a seguir conociendo nuestras ofertas!";
+    $message = "Muchas gracias " . $usuario[0]->getUsNombre() . " por tu compra, te invitamos a seguir conociendo nuestras ofertas!";
 }
 
 $compraestadoitem[0]->setCeFechaFin(date('Y-m-d H:i:s'));
@@ -55,11 +55,11 @@ $param['idcompraestadotipo'] = $nuevoestado;
 $param['cefechaini'] = date('Y-m-d H:i:s');
 $abmcompraestado->alta($param);
 
-ini_set( 'display_errors', 1 );
-error_reporting( E_ALL );
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 $from = "ignacio.araya@est.fi.uncoma.edu.ar";
 $to = $usuario[0]->getUsMail();
 $headers = "From:" . $from;
-mail($to,$subject,$message, $headers);
+mail($to, $subject, $message, $headers);
 
-echo json_encode($retorno); 
+echo json_encode($retorno);

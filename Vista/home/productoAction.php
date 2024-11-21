@@ -4,6 +4,7 @@ $datos = darDatosSubmitted();
 $json = filter_input(INPUT_POST, 'json');
 $decoded_json = json_decode($json);
 $idProducto = $decoded_json->id;
+$cantidad = $decoded_json->cantidad;
 
 $session = new Session();
 if (!$session->validar()) {
@@ -23,7 +24,7 @@ if (!$session->validar()) {
         $abmcompraitem = new AbmCompraItem();
         $param['idproducto'] = $idProducto;
         $param['idcompra'] = $idcompra;
-        $param['cicantidad'] = 1;
+        $param['cicantidad'] = $cantidad;
 
         if ($abmcompraitem->alta($param)) {
 

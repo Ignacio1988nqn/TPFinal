@@ -34,7 +34,7 @@ foreach ($listacompras as $item) {
     $param['idcompraestadotipo'] = $item->getIdCompraEstadoTipo()->getIdCompraEstadoTipo();
     $estado = $abmestadotipo->buscar($param);
 
-    array_push($listatabla, [$producto[0]->getProNombre(), $estado[0]->getCetDescripcion(), $item->getCeFechaIni(), $estado[0]->getIdCompraEstadoTipo(), $idcompra]);
+    array_push($listatabla, [$producto[0]->getProNombre(), $estado[0]->getCetDescripcion(), $item->getCeFechaIni(), $estado[0]->getIdCompraEstadoTipo(), $idcompra,$compraitem[0]->getCiCantidad()]);
 }
 
 ?>
@@ -49,8 +49,9 @@ foreach ($listacompras as $item) {
                         <thead>
                             <tr>
                                 <th>Producto</th>
+                                <th>Cantidad</th>
                                 <th>Fecha Estado</th>
-                                <th>Estado</th>
+                                <th>Estado</th>                                
                                 <th>Actualizar Estado</th>
                                 <th>Cancelar pedido</th>
                             </tr>
@@ -60,6 +61,7 @@ foreach ($listacompras as $item) {
                             foreach ($listatabla as $listaitem) {
                                 echo '<tr>';
                                 echo  '<td>' . $listaitem[0] . '</td>';
+                                echo  '<td>' . $listaitem[5] . '</td>';
                                 echo  '<td>' . $listaitem[2] . '</td>';
                                 echo  '<td>' . $listaitem[1] . '</td>';
                                 if ($listaitem[3] != 4 && $listaitem[3] != 6) {
