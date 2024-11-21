@@ -1,52 +1,40 @@
 <?php
 include_once "../../../configuracion.php";
 $datos = darDatosSubmitted();
-
-$idmenu = $datos['idmenu']; 
+$idmenu = $datos['idmenu'];
 $abmMenu = new AbmMenu();
-$param['idmenu'] = $idmenu;
-$menu = $abmMenu->buscar($param); 
-if (count($menu)>0){
-    $idpadre = isset($datos['idpadre']) && $datos['idpadre'] !== '' ? $datos['idpadre'] : null;
-    //buscamos en el abm un padre si es que se asigna para modificar 
-    if ($idpadre !=null){
-        $paramPadre['idmenu'] = $idpadre; 
-        $menuPadre = $abmMenu->buscar($paramPadre); 
-        if(count($menuPadre)>0){
-            $menu[0]->setIdPadre($menuPadre[0]); 
-        } else {
-            $menu[0]->setIdPadre(null); 
-        }
-    } else {
-        $menu[0]->setIdPadre(null); 
-    }
+$menus = $abmMenu->buscar(['idmenu' => $idmenu]);
+if (count($menus) > 0) {
+    $param = [
+        'idmenu' => $idmenu,
+        'menombre' => $datos['menombre'],
+        'medescripcion' => $datos['medescripcion'],
+        'idpadre' => isset($datos['idpadre']) && $datos['idpadre'] !== '' ? $datos['idpadre'] : null,
+        'medeshabilitado' => isset($datos['medeshabilitado']) && $datos['medeshabilitado'] == 'on' ? null : date('Y-m-d H:i:s'),
+    ];
 
-    //actualiza para modificar
-    $menu[0]->setMeNombre($datos['menombre']);
-    $menu[0]->setMeDescrpcion($datos['medescripcion']);
-    if (isset($datos['medeshabilitado']) && $datos['medeshabilitado'] == 'on') {
-        $menu[0]->setMeDeshabilitado(null); 
-    } else {
-        $menu[0]->setMeDeshabilitado(date('Y-m-d H:i:s'));  
-    }   
-    $menu[0]->modificar(); 
-
-    // eliminanos todas las relaciones del menu asi ponemos las nuevas 
+    $abmMenu->modificacion($param);
+    //se eliminan todas las relaciones de los roles con determinado menu 
     $abmMenuRol = new AbmMenuRol();
-    $rolesAsignadosAnteriores = $abmMenuRol->buscar(['idmenu' => $idmenu]); 
+    $paramMR['idmenu'] = $idmenu;
+    $rolesAsignadosAnteriores = $abmMenuRol->buscar($paramMR);
     foreach ($rolesAsignadosAnteriores as $menuRol) {
         $menuRol->eliminar();
     }
+
+    //se asignan los nuevos roles  en las relaciones menu-rol 
     if (isset($datos['roles'])) {
         foreach ($datos['roles'] as $idrol) {
             $paramRol['idrol'] = $idrol;
             $abmRol = new ABMRol();
             $rol = $abmRol->buscar($paramRol);
-            $paramMenuRol['idmenu'] = $menu[0]->getIdMenu();
+            $paramMenuRol['idmenu'] = $menus[0]->getIdMenu();  
             $paramMenuRol['idrol'] = $rol[0]->getIdRol();
-            $abmMenuRol->alta($paramMenuRol); 
+            $abmMenuRol->alta($paramMenuRol);
         }
     }
+
+    //si hay un rol seleccionado 
     if (isset($datos['selectRol'])) {
         $paramRol['idrol'] = $datos['selectRol'];
         $rol = $abmRol->buscar($paramRol);
@@ -58,9 +46,8 @@ if (count($menu)>0){
     }
     echo json_encode(['success' => true]);
 } else {
-    echo json_encode(['sucess'=>false]);
+    echo json_encode(['success' => false, 'message' => 'Menú no encontrado.']);
 }
-
 
 
 ?>

@@ -165,7 +165,7 @@ include_once("../../estructura/footer.php");
                     });
                     setTimeout(function() {
                         window.location.href = 'abmMenu.php';
-                    }, 2000)
+                    }, 3000)
                 } else {
                     swal({
                     title: "Error.",
@@ -216,7 +216,7 @@ include_once("../../estructura/footer.php");
                 });
                 setTimeout(function() {
                     window.location.href = 'abmMenu.php';
-                }, 2000)
+                }, 3000)
             },
             error: function(request, status, error) {
                 swal({

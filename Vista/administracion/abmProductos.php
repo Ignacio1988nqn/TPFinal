@@ -166,7 +166,7 @@ include_once("../../estructura/footer.php");
                 }
                 setTimeout(function() {
                 window.location.href = 'abmProductos.php';
-            }, 2000)
+            }, 3000)
             },
             error: function(request, status, error) {
                 swal({
@@ -196,7 +196,7 @@ include_once("../../estructura/footer.php");
                 });
                 setTimeout(function() {
                 window.location.href = 'abmProductos.php';
-            }, 2000)
+            }, 3000)
             },
             error: function(request, status, error) {
                 swal({
@@ -231,7 +231,7 @@ include_once("../../estructura/footer.php");
                     swal("Imagen subida con exito");
                     setTimeout(function() {
                     window.location.href = 'abmUsuarios.php';
-                }, 2000)
+                }, 3000)
                 }
             },
             error: function(request, status, error) {
