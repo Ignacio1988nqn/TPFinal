@@ -1,8 +1,9 @@
 <?php
+require_once "../configuracion.php";
 
 // Generador de imagenes usando la libreria/extension de php "GD"
 
-session_start();
+$session = new Session();
 
 // Configuraciones
 define('ANCHO', 150);
@@ -17,7 +18,7 @@ $codigo = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx
 $fuente = realpath('../Vista/assets/font/Consolas.ttf');
 
 // Guardar el código en la sesión después de aplicar hash (md5)
-$_SESSION['codigo_verificacion'] = md5($codigo);
+$session->setCodVerif('codigo_verificacion', md5($codigo));
 
 // Crear una imagen en blanco
 $imagen = imagecreatetruecolor(ANCHO, ALTO);

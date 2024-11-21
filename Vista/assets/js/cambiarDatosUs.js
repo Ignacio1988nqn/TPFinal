@@ -54,7 +54,13 @@ function guardarCambios() {
       success: function (response) {
         console.log(response); // debug
         if (response && response.success) {
-          alert(response.message);
+          Swal.fire({
+            title: "Cambio exitoso",
+            text: response.message,
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
         } else {
           alert("Error: " + (response.message || "Ocurrió un problema."));
         }

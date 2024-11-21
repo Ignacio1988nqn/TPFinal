@@ -1,35 +1,47 @@
 <?php
-include_once "../../configuracion.php";
+require "../../configuracion.php";
 
-$datos = darDatosSubmitted(); 
+$datos = darDatosSubmittedJSON();
 $session = new Session();
-$roles = $session->getRol(); 
 
-if (!$roles || count($roles) == 0) {
-    echo "No se han encontrado roles para este usuario.";
-    exit();
-}
-$rolSel = $datos['rol'] ?? null;
+$response = [
+    "success" => false,
+    "message" => "",
+    "redirect" => null,
+];
 
-if ($rolSel) {
-    $session->setRol($rolSel);
-    switch ($rolSel) {
-        case 1:
-            header("Location: ../home/home.php");
+if (isset($datos["rol"])) {
+    $rolSeleccionado = $datos["rol"];
+    $roles = $session->getRol();
+
+    $rolValido = false;
+    foreach ($roles as $rol) {
+        if ($rol->getIdRol() == $rolSeleccionado) {
+            $rolValido = true;
             break;
-        case 2:
-            header("Location: ../administracion/admin.php");
-            break;
-        case 3:
-            header("Location: ../deposito/depo.php");
-            break;
-        default:
-            echo "Rol desconocido.";
-            break;
+        }
+    }
+
+    if ($rolValido) {
+        $session->setRol($rolSeleccionado);
+
+        $response = [
+            "success" => true,
+            "redirect" => match ($rolSeleccionado) {
+                1 => "../home/home.php",
+                2 => "../administracion/admin.php",
+                3 => "../deposito/depo.php",
+                default => null,
+            },
+            "message" => "Rol seleccionado correctamente.",
+        ];
+    } else {
+        $response["message"] = "Rol inválido seleccionado.";
     }
 } else {
-    echo "No se seleccionó un rol.";
-    exit();
+    $response["message"] = "No se recibió ningún rol.";
 }
 
-
+header("Content-Type: application/json");
+echo json_encode($response);
+exit();

@@ -1,3 +1,4 @@
+
 <?php
 include_once("../../estructura/header.php");
 include_once("../../estructura/sidebar.php");
@@ -14,6 +15,7 @@ $datos = darDatosSubmitted();
 $id =  $session->getUsuario()->getIdUsuario();
 
 ?>
+
 <section class="home-section">
     <div id="container" style="margin:50px 75px;height: 87vh;">
         <div class="bd" style="background-color: white; padding: 60px;border-radius: 10px">
@@ -66,8 +68,11 @@ include_once("../../estructura/footer.php");
 
 </html>
 
+
 <script src="../assets/js/JsJQuery/jquery-3.7.1.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="../assets/js/cambiarDatosUs.js"></script>

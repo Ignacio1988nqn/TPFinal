@@ -4,14 +4,17 @@ require "../../configuracion.php";
 
 $datos = darDatosSubmitted();
 
-$response = ["success" => false, "mensaje" => ""];
+$response = [
+    "success" => false,
+    "mensaje" => ""
+];
 
 if (isset($datos["usnombre"]) && isset($datos["usmail"]) && isset($datos["uspass"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
     $nombreUsuario = $datos["usnombre"];
     $password = $datos["uspass"];
     $mail = $datos["usmail"];
     $codigo = $datos["codigo"];
-    
+
     if (empty($codigo)) {
         $response["mensaje"] = "Codigo de verificacion incorrecto.";
         echo json_encode($response);
@@ -31,7 +34,7 @@ if (isset($datos["usnombre"]) && isset($datos["usmail"]) && isset($datos["uspass
         exit;
     }
 
-    // Validar si el nombre de usuario ya existe
+    // verificar si ya existe un usuario con ese nombre
     $usuarioExistente = new ABMUsuario();
     $usuarioEncontrado = $usuarioExistente->buscar(['usnombre' => $nombreUsuario]);
 
@@ -41,20 +44,29 @@ if (isset($datos["usnombre"]) && isset($datos["usmail"]) && isset($datos["uspass
         exit;
     }
 
-    // codigo captcha
-    session_start();
-    
-    $captcha = md5($codigo);
-    $codigoVerificacion = isset($_SESSION['codigo_verificacion']) ? $_SESSION['codigo_verificacion'] : '';
-
-    if ($codigoVerificacion !== $captcha) {
-        $_SESSION['codigo_verificacion'] = '';
-        $response["mensaje"] = "Codigo de verificacion incorrecto.";
+    // lo mismo con el mail
+    $mailUsEncontrado = $usuarioExistente->buscar(['usmail' => $mail]);
+    if (!empty($mailUsEncontrado)) {
+        $response["mensaje"] = "El mail ya está registrado. Por favor elige otro.";
         echo json_encode($response);
         exit;
     }
 
+    $session = new Session();
 
+    // codigo captcha
+    $captcha = md5($codigo);
+    $codigoVerificacion = $session->getCodVerif('codigo_verificacion');
+
+    if ($codigoVerificacion !== $captcha) {
+        $session->remover('codigo_verificacion');
+        $response["mensaje"] = "Código de verificación incorrecto.";
+        echo json_encode($response);
+        exit;
+    }
+
+    $session->cerrar();
+    
     $datos['accion'] = 'nuevo';
     $datos['usdeshabilitado'] = null;
 

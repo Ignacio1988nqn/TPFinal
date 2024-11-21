@@ -2,30 +2,64 @@
 
 require "../../configuracion.php";
 
-$datos = darDatosSubmitted();
+$datos = darDatosSubmittedJSON();
+
+$response = [
+    "success" => false,
+    "message" => ""
+];
+
 
 if (isset($datos["usnombre"]) && isset($datos["uspass"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+
     $nombreUsuario = $datos["usnombre"];
-    $passwordHash = $datos["uspass"]; // contraseña hasheada
+    $passwordHash = $datos["uspass"];
 
     $session = new Session();
 
-    $session->iniciar($nombreUsuario, $passwordHash);
+    if ($session->iniciar($nombreUsuario, $passwordHash)) {
+        $usuario = $session->getUsuario();
 
-    if ($session->validar()) {
-        
-        foreach ($session->getRol() as $rol) {
-            $val = $rol->getIdRol();
-        }
-
-        if ($val == 1) {
-            header("Location: ../home/home.php");
+        if ($usuario->getUsDeshabilitado()) {
+            $response["message"] = "Usuario deshabilitado, no puede iniciar sesión.";
         } else {
-            header("Location: ../administracion/admin.php");
+            $roles = $session->getRol();
+            $cantidadRoles = count($roles);
+
+            if ($cantidadRoles > 1) {
+                $response = [
+                    "success" => true,
+                    "redirect" => "../accion/seleccionarRol.php",
+                    "message" => "Inicio de sesión exitoso. Seleccione un rol."
+                ];
+            } elseif ($cantidadRoles === 1) {
+                $rol = $roles[0]->getIdRol();
+                $response = [
+                    "success" => true,
+                    "redirect" => match ($rol) {
+                        1 => "../home/home.php",
+                        2 => "../administracion/admin.php",
+                        3 => "../deposito/depo.php",
+                        default => "../home/home.php",
+                    },
+                    "message" => "Inicio de sesión exitoso.",
+                ];
+                echo json_encode($response);
+                exit();
+
+            } else {
+                $response["message"] = "No se han encontrado roles para este usuario.";
+            }
         }
-        exit;
     } else {
-        header("Location: ../login/login.php?error=1");
-        exit;
+        $response["message"] = "Usuario o contraseña incorrectos.";
+        echo json_encode($response);
+        exit();
     }
+} else {
+    $response["message"] = "Datos invalidos.";
 }
+
+header("Content-Type: application/json");
+echo json_encode($response);
+exit();

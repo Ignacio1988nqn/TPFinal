@@ -16,7 +16,7 @@ if ($menu) {
     $retorno['menombre'] = $menuObj->getMeNombre();
     $retorno['medescripcion'] = $menuObj->getMeDescripcion();
     $medeshabilitado = $menuObj->getMeDeshabilitado();
-    if ($medeshabilitado == '0000-00-00 00:00:00') {
+    if ($medeshabilitado == '0000-00-00 00:00:00' || $medeshabilitado==null) {
         $retorno['medeshabilitado'] = null; 
     } else {
         $retorno['medeshabilitado'] = $medeshabilitado;
