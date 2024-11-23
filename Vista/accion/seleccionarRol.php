@@ -1,43 +1,11 @@
 <?php
 require "../../configuracion.php";
-$datos = darDatosSubmitted();
+
 $session = new Session();
 $roles = $session->getRol();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
- 
-    $rolSeleccionado = false;
-    
-    if (isset($datos['rol'])) {
-        $rolSeleccionado = $datos['rol'];
-    } else {
-        $error = "No se seleccionó ningún rol.";
-    }
-
-    if ($rolSeleccionado) {
-        $rolValido = false;
-        foreach ($roles as $rol) {
-            if ($rol->getIdRol() == $rolSeleccionado) {
-                $rolValido = true;
-                break;
-            }
-        }
-
-        if ($rolValido) {
-            $session->setRol($rolSeleccionado);
-            header("Location: " . match ($rolSeleccionado) {
-                1 => "../home/home.php",
-                2 => "../administracion/admin.php",
-                3 => "../deposito/depo.php",
-                default => "../home/home.php",
-            });
-            exit();
-        } else {
-            $error = "Rol seleccionado no es válido.";
-        }
-    } else {
-        $error = "No se seleccionó ningún rol.";
-    }
+if (!$roles || count($roles) == 0) {
+    echo "No se han encontrado roles para este usuario.";
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -57,10 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h4>Tiene más de un rol, elija con cuál ingresar</h4>
                 <br><br><br><br>
                 <div class="col-md-4 col-sm-8 bg-white p-4 rounded shadow">
-                    <form method="POST" action="">
+                    <form id="formRol">
                         <div class="form-group mb-3">
                             <label for="rol">Seleccione el rol:</label>
-                            <br><br>
                             <select class="form-control" id="rol" name="rol">
                                 <option value="">Seleccione...</option>
                                 <?php foreach ($roles as $rol): ?>
@@ -68,16 +35,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <?php if (isset($error)): ?>
-                            <div class="alert alert-danger"><?php echo $error; ?></div>
-                        <?php endif; ?>
-                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                        <button type="button" class="btn btn-primary w-100" id="submitRol">Entrar</button>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
     <script src="../assets/bootstrap5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.getElementById('submitRol').addEventListener('click', async function () {
+        const select = document.getElementById('rol');
+        const rol = select.value;
+
+        if (rol === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Rol no seleccionado',
+                text: 'Debe seleccionar un rol antes de continuar.',
+                confirmButtonText: 'Entendido'
+            });
+            return;
+        }
+
+        const response = await fetch('./procesarRol.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ rol }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            window.location.href = result.redirect;
+        } else {
+            alert(result.message);
+        }
+    });
+</script>
+
 </body>
 
 </html>

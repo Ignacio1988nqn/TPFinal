@@ -11,7 +11,7 @@ $response = [
 ];
 
 if (isset($datos["rol"])) {
-    $rolSeleccionado = $datos["rol"];
+    $rolSeleccionado = (int)$datos["rol"];
     $roles = $session->getRol();
 
     $rolValido = false;
