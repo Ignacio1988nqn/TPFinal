@@ -6,38 +6,7 @@ $decoded_json = json_decode($json);
 $idProducto = $decoded_json->id;
 $cantidad = $decoded_json->cantidad;
 
-$session = new Session();
-if (!$session->validar()) {
-    $retorno['estado'] = false;
-} else {
-    $retorno['estado'] = true;
-    $retorno['insert'] = false;
-
-    $abmcompra = new AbmCompra();
-
-    $param['idusuario'] = $session->getUsuario()->getIdUsuario();
-    $param['cofecha'] = date('Y-m-d H:i:s');
-
-    if ($abmcompra->alta($param)) {
-
-        $idcompra = $abmcompra->getLastInsertedID();
-        $abmcompraitem = new AbmCompraItem();
-        $param['idproducto'] = $idProducto;
-        $param['idcompra'] = $idcompra;
-        $param['cicantidad'] = $cantidad;
-
-        if ($abmcompraitem->alta($param)) {
-
-            $abmcompraestado = new AbmCompraEstado();
-            $param['idcompraestadotipo'] = 5;
-            $param['idcompra'] = $idcompra;
-            $param['cefechaini'] = date('Y-m-d H:i:s');
-
-            if ($abmcompraestado->alta($param)) {
-                $retorno['insert'] = true;
-            }
-        }
-    }
-}
+$abmCarrito = new AbmCarrito();
+$retorno = $abmCarrito->addProducto($idProducto,$cantidad);
 
 echo json_encode($retorno);

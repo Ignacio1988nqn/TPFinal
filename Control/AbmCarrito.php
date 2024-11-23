@@ -170,4 +170,92 @@ class AbmCarrito
             ];
         }
     }
+
+    public function comprarCarrito($listacomprar)
+    {
+        $abmcompraestado = new AbmCompraEstado();
+        $abmcompraitem = new AbmCompraItem();
+
+        foreach ($listacomprar as $item) {
+
+            $param['cefechaini'] = null;
+            $param['idcompraestadotipo'] = null;
+            $param['idcompra'] =  $item[4];
+            $param['cefechafin'] = "NULL";
+            $compraestadoitem = $abmcompraestado->buscar($param);
+            $compraestadoitem[0]->setCeFechaFin(date('Y-m-d H:i:s'));
+            $compraestadoitem[0]->modificar();
+            $param['idcompra'] = $item[4];
+            $param['idcompraestadotipo'] = 1;
+            $param['cefechaini'] = date('Y-m-d H:i:s');
+            $abmcompraestado->alta($param);
+        }
+    }
+
+    public function cancelarCarrito($idcompra)
+    {
+        $abmcompraestado = new AbmCompraEstado();
+        $param['cefechafin'] = "NULL";
+        $param['idcompra'] = $idcompra;
+        $compraestadoitem = $abmcompraestado->buscar($param);
+
+        $compraestadoitem[0]->setCeFechaFin(date('Y-m-d H:i:s'));
+        $compraestadoitem[0]->modificar();
+    }
+
+    public function vaciarTodoCarrito($listacomprar)
+    {
+
+        $abmcompraestado = new AbmCompraEstado();
+        $abmcompraitem = new AbmCompraItem();
+
+        foreach ($listacomprar as $item) {
+
+            $param['cefechaini'] = null;
+            $param['idcompraestadotipo'] = null;
+            $param['idcompra'] =  $item[4];
+            $param['cefechafin'] = "NULL";
+            $compraestadoitem = $abmcompraestado->buscar($param);
+            $compraestadoitem[0]->setCeFechaFin(date('Y-m-d H:i:s'));
+            $compraestadoitem[0]->modificar();
+        }
+    }
+
+    public function addProducto($idProducto,$cantidad)
+    {
+        $session = new Session();
+        if (!$session->validar()) {
+            $retorno['estado'] = false;
+        } else {
+            $retorno['estado'] = true;
+            $retorno['insert'] = false;
+
+            $abmcompra = new AbmCompra();
+
+            $param['idusuario'] = $session->getUsuario()->getIdUsuario();
+            $param['cofecha'] = date('Y-m-d H:i:s');
+
+            if ($abmcompra->alta($param)) {
+
+                $idcompra = $abmcompra->getLastInsertedID();
+                $abmcompraitem = new AbmCompraItem();
+                $param['idproducto'] = $idProducto;
+                $param['idcompra'] = $idcompra;
+                $param['cicantidad'] = $cantidad;
+
+                if ($abmcompraitem->alta($param)) {
+
+                    $abmcompraestado = new AbmCompraEstado();
+                    $param['idcompraestadotipo'] = 5;
+                    $param['idcompra'] = $idcompra;
+                    $param['cefechaini'] = date('Y-m-d H:i:s');
+
+                    if ($abmcompraestado->alta($param)) {
+                        $retorno['insert'] = true;
+                    }
+                }
+            }
+        }
+        return $retorno;
+    }
 }

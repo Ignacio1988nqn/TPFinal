@@ -5,38 +5,8 @@ if (!$session->validar()) {
     header('Location: ../login/login.php');
 }
 
-$abmcompraestado = new AbmCompraEstado();
-$abmcompraitem = new AbmCompraItem();
-$abmproducto = new AbmProducto();
-$abmestadotipo = new AbmCompraEstadoTipo();
-
-$listacompras = array();
-$listatabla = array();
-
-$param['cefechafin'] = "NULL";
-$itemcompra = $abmcompraestado->buscar($param);
-if ($itemcompra) {
-    foreach ($itemcompra as $item) {
-        if ($item->getIdCompraEstadoTipo()->getIdCompraEstadoTipo() != '5') {
-            array_push($listacompras, $item);
-        }
-    }
-}
-
-foreach ($listacompras as $item) {
-
-    $idcompra = $item->getIdCompra()->getIdCompra();
-    $param['idcompra'] = $idcompra;
-    $param['idproducto'] = null;
-    $compraitem = $abmcompraitem->buscar($param);
-    $param['idproducto'] = $compraitem[0]->getIdProducto()->getIdProducto();
-    $producto = $abmproducto->buscar($param);
-    $param['idcompraestadotipo'] = $item->getIdCompraEstadoTipo()->getIdCompraEstadoTipo();
-    $estado = $abmestadotipo->buscar($param);
-
-    array_push($listatabla, [$producto[0]->getProNombre(), $estado[0]->getCetDescripcion(), $item->getCeFechaIni(), $estado[0]->getIdCompraEstadoTipo(), $idcompra,$compraitem[0]->getCiCantidad()]);
-}
-
+$abmdeposito = new AbmDeposito();
+$listatabla = $abmdeposito->getVentas();
 ?>
 
 <section class="home-section">
@@ -51,7 +21,7 @@ foreach ($listacompras as $item) {
                                 <th>Producto</th>
                                 <th>Cantidad</th>
                                 <th>Fecha Estado</th>
-                                <th>Estado</th>                                
+                                <th>Estado</th>
                                 <th>Actualizar Estado</th>
                                 <th>Cancelar pedido</th>
                             </tr>
