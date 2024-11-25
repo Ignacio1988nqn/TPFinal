@@ -123,4 +123,28 @@ class AbmMenuRol {
         $arreglo = MenuRol::listar($where);  
         return $arreglo;
     }
+
+    //elimina las relaciones de un menu con los roles 
+    public function eliminarRoles($idmenu){
+        $rolesAsignados = $this->buscar(['idmenu' => $idmenu]); 
+        foreach ($rolesAsignados as $unmenurol){
+            $unmenurol->eliminar(); 
+        }
+    } 
+
+    //asigna roles a un menu 
+    public function asignarRoles($idmenu, $idrol){
+        $param = ['idmenu'=> $idmenu, 'idrol'=>$idrol]; 
+        $this->alta($param); 
+    }
+
+    //actualiza a los roles 
+    public function actualizarRol($idmenu, $rol){
+        $rolesAsignados = $this->buscar(['idmenu' => $idmenu]); 
+        if (count($rolesAsignados) > 0) {
+            $menuRol = $rolesAsignados[0];
+            $menuRol->setRol($rol);
+            $menuRol->modificar();
+        } 
+    }
 }

@@ -248,4 +248,49 @@ class ABMUsuario
         $arreglo = $obj->listar($where);
         return $arreglo;
     }
+
+    public function modificarUsuario($datos) {
+        $param['idusuario'] = $datos['id'];
+        $usuario = $this->buscar($param); 
+        $retorno = ['success' => false];
+        if (count($usuario) > 0) {
+            $usuario = $usuario[0]; 
+            $habilitado = isset($datos['habilitado']) && $datos['habilitado'] == 1 ? null : date('Y-m-d H:i:s');
+            $usuario->setUsDeshabilitado($habilitado); 
+            if ($usuario->modificar()) { 
+                $abmusuariorol = new ABMUsuarioRol();
+                $userrol = $abmusuariorol->buscar($param); //busca los roles actuales
+    
+                //elimina los roles antiguos
+                foreach ($userrol as $us) {
+                    $us->eliminar();
+                }
+    
+                //asigna los nuevos roles
+                if (isset($datos['roles'])) {
+                    foreach ($datos['roles'] as $idrol) {
+                        $param['idrol'] = $idrol;
+                        $abmrol = new ABMRol();
+                        $rol = $abmrol->buscar($param); 
+                        if (count($rol) > 0) {
+                            $paramUsuarioRol['idusuario'] = $usuario->getIdUsuario();
+                            $paramUsuarioRol['idrol'] = $rol[0]->getIdRol();
+                            $abmusuariorol->alta($paramUsuarioRol);
+                        }
+                    }
+                }
+                if (isset($datos['selectRol'])) {
+                    $param['idrol'] = $datos['selectRol'];
+                    $rol = $abmrol->buscar($param);
+                    if (count($rol) > 0) {
+                        $userrol[0]->setIdRol($rol[0]);
+                        $userrol[0]->modificar(); 
+                    }
+                }
+                $retorno = ['success' => true]; 
+            }
+        }
+        return $retorno;
+    }
+    
 }

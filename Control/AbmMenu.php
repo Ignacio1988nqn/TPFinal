@@ -130,4 +130,109 @@ class AbmMenu {
         $arreglo = Menu::listar($where);  
         return $arreglo;
     }
+
+    //funcion para abmMenuBuscar
+    public function buscarInfo($idmenu){ 
+        $param['idmenu'] = $idmenu; 
+        $menu = $this->buscar($param); 
+        $retorno = []; 
+        if ($menu){
+            $menuObj = $menu[0];
+            //devuelve los datos 
+            $retorno['idmenu'] = $menuObj->getIdMenu();
+            $retorno['menombre'] = $menuObj->getMeNombre();
+            $retorno['medescripcion'] = $menuObj->getMeDescripcion();
+            $medeshabilitado = $menuObj->getMeDeshabilitado();
+            if ($medeshabilitado == '0000-00-00 00:00:00' || $medeshabilitado==null) {
+                $retorno['medeshabilitado'] = null; 
+            } else {
+                $retorno['medeshabilitado'] = $medeshabilitado;
+            }
+            //roles asociados al menú
+            $abmMenuRol = new AbmMenuRol();
+            $rolesAsociados = $abmMenuRol->buscar(['idmenu' => $idmenu]);
+            //colecciona los roles asociados para mostrarlos en el check 
+            $retorno['roles'] = [];
+            foreach ($rolesAsociados as $menuRol) {
+            $retorno['roles'][] = $menuRol->getIdRol()->getIdRol(); 
+            }
+            
+            //si hay id padre, lo muestra, si no lo deja vacio. 
+            $menuPadre = $menuObj->getIdPadre();
+            if ($menuPadre) {
+                $retorno['idpadre'] = $menuPadre->getIdMenu();
+            } else {
+                $retorno['idpadre'] = null;
+            }
+        } else {
+            $retorno['error'] = 'Menú no encontrado';
+        }
+        return $retorno; 
+    }
+
+    //funcion pra simplificar el modificar 
+    public function modificarMenu($datos){
+        $idmenu = $datos['idmenu'];
+        $menus = $this->buscar(['idmenu' => $idmenu]); 
+        if (count($menus)>0){
+            $param = [
+                'idmenu' => $idmenu,
+                'menombre' => $datos['menombre'],
+                'medescripcion' => $datos['medescripcion'],
+                'idpadre' => isset($datos['idpadre']) && $datos['idpadre'] !== '' ? $datos['idpadre'] : null,
+                'medeshabilitado' => isset($datos['medeshabilitado']) && $datos['medeshabilitado'] == 'on' ? null : date('Y-m-d H:i:s'),
+            ];
+            $this->modificacion($param); 
+            $abmMenuRol = new AbmMenuRol(); 
+            $abmMenuRol->eliminarRoles($idmenu); 
+            $abmRol = new ABMRol(); 
+            if (isset($datos['idmenu'])){
+                foreach($datos['roles'] as $idrol){
+                    $rol = $abmRol->buscar(['idrol' => $idrol]); 
+                    if (count($rol)>0){
+                        $abmMenuRol->asignarRoles($idmenu, $rol[0]->getIdRol()); 
+                    }
+                }
+            }
+            if (isset($datos['selectRol'])){
+                $rol = $abmRol->buscar(['idrol'=> $datos['selectRol']]); 
+                if (count($rol)>0){
+                    $abmMenuRol->actualizarRol($idmenu, $rol[0]); 
+                }
+            }
+            $retorno = ['success' => true]; 
+        } else {
+            $retorno = ['success'=>false]; 
+        }
+        return $retorno; 
+    }
+
+    public function altaMenuYRol($datos){
+        $abmMenuRol = new AbmMenuRol();  
+        if (isset($datos['menombre']) && isset($datos['medescripcion'])){
+            //tomamos los nuevos datos para dar el alta y mandarlos a la funcion
+             $idpadre = isset($datos['idpadre']) && $datos['idpadre'] !== "" ? $datos['idpadre'] : NULL;
+             $param['menombre'] = $datos['menombre'];
+             $param['medescripcion'] = $datos['medescripcion'];
+             $param['idpadre'] = $idpadre ;
+             $param['medeshabilitado'] = isset($datos['medeshabilitado']) ? $datos['medeshabilitado'] : 0;
+             //var_dump($param);
+             if ($this->alta($param)){
+                //relacion con roles 
+                $ultimoId = $this->buscar(['menombre' => $param['menombre']])[0]->getIdMenu();
+                foreach ($datos['roles'] as $rolId) {
+                    $paramMR = ['idmenu' => $ultimoId, 'idrol' => $rolId];
+                    if (!$abmMenuRol->alta($paramMR)) {
+                        $resp = (['success' => false, 'message' => 'Error al asignar un rol al menú']);
+                        exit;
+                    }
+                }
+                $resp = (['success' => true]);
+                exit; 
+            }
+        }else {
+            $resp = (['success' => false, 'message' => 'Datos incompletos']);
+        }
+        return $resp; 
+    }
 }
